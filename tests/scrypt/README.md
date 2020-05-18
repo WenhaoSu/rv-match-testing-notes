@@ -15,8 +15,6 @@ The source code of `scrypt` can be found [here](https://github.com/Tarsnap/scryp
 ```
 git clone https://github.com/Tarsnap/scrypt.git
 cd scrypt/
-sudo apt install autoconf
-sudo apt install libtool-bin
 autoreconf -i
 ./configure
 make
@@ -27,8 +25,6 @@ make test
 ```
 git clone https://github.com/Tarsnap/scrypt.git
 cd scrypt/
-sudo apt install autoconf
-sudo apt install libtool-bin
 autoreconf -i
 ./configure CC=kcc LD=kcc
 make
