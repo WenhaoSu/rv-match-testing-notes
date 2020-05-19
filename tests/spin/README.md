@@ -28,7 +28,7 @@ Run `./spin` on `pml` files in `Spin/Examples/`.
 
 `kcc` succeeded in the `make` job.
 
-When running `make` with `gcc` and compiling `pangen6.c`, following undefined behaviors are printed:
+When running `make` with `kcc` and compiling `pangen6.c`, following undefined behaviors are printed:
 ```
 kcc -O2 -DNXT	   -c -o pangen6.o pangen6.c
 pangen6.c:2174:6: error: Potential negative zero produced via bitwise operations, undefined under sign and magnitude or one's complement arithmetic, implementation-defined otherwise.
