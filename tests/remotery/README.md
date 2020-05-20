@@ -25,7 +25,8 @@ The source code of `remotery` can be found [here](git clone https://github.com/C
     kcc -profile x86_64-linux-gcc-glibc
 ```
 
-###Observation-Build
+### Observation-Build
+
 Build was successful in gcc case. In kcc it found some errors which may have resulted in failure of producing an executable files.
 ```
 /usr/include/x86_64-linux-gnu/bits/floatn.h[75:9-17] : Warning: Encountered _Complex type.  These are not yet supported, and are currently ignored.
@@ -56,5 +57,6 @@ lib/Remotery.c:901:5: warning: Conversion from an integer to non-null pointer.
 /usr/include/x86_64-linux-gnu/bits/floatn.h[75:9-17] : Warning: Encountered _Complex type.  These are not yet supported, and are currently ignored.
 
 ```
-#Observation- Testing
+### Observation- Testing
+
 The gcc produced an executable file but it didn't print anything probably requiring input whereas the kcc falied to produce and executable.
