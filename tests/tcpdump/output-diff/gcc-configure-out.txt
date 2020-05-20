@@ -1,0 +1,157 @@
+suwenhao@DESKTOP-AB2N496:/mnt/c/Users/suwen/Desktop/intern/tcpdump-test/gcc/tcpdump$ ./configure CC="gcc -std=gnu11" LD=gcc
+checking build system type... x86_64-unknown-linux-gnu
+checking host system type... x86_64-unknown-linux-gnu
+checking for gcc... gcc -std=gnu11
+checking whether the C compiler works... yes
+checking for C compiler default output file name... a.out
+checking for suffix of executables...
+checking whether we are cross compiling... no
+checking for suffix of object files... o
+checking whether we are using the GNU C compiler... yes
+checking whether gcc -std=gnu11 accepts -g... yes
+checking for gcc -std=gnu11 option to accept ISO C89... none needed
+checking whether the compiler supports the -ffloat-store option... yes
+checking for inline... inline
+checking for __attribute__... yes
+checking whether __attribute__((unused)) can be used without warnings... yes
+checking whether __attribute__((noreturn)) can be applied to function pointers without warnings... yes
+checking whether __attribute__((format)) can be used without warnings... yes
+checking whether __attribute__((format)) can be applied to function pointers... yes
+checking how to run the C preprocessor... gcc -std=gnu11 -E
+checking for grep that handles long lines and -e... /bin/grep
+checking for egrep... /bin/grep -E
+checking for ANSI C header files... yes
+checking for sys/types.h... yes
+checking for sys/stat.h... yes
+checking for stdlib.h... yes
+checking for string.h... yes
+checking for memory.h... yes
+checking for strings.h... yes
+checking for inttypes.h... yes
+checking for stdint.h... yes
+checking for unistd.h... yes
+checking fcntl.h usability... yes
+checking fcntl.h presence... yes
+checking for fcntl.h... yes
+checking rpc/rpc.h usability... yes
+checking rpc/rpc.h presence... yes
+checking for rpc/rpc.h... yes
+checking rpc/rpcent.h usability... no
+checking rpc/rpcent.h presence... no
+checking for rpc/rpcent.h... no
+checking netdnet/dnetdb.h usability... no
+checking netdnet/dnetdb.h presence... no
+checking for netdnet/dnetdb.h... no
+checking for net/pfvar.h... no
+checking for netinet/if_ether.h... yes
+checking whether time.h and sys/time.h may both be included... yes
+checking smi.h usability... no
+checking smi.h presence... no
+checking for smi.h... no
+checking whether to enable the possibly-buggy SMB printer... yes
+configure: WARNING: The SMB printer may have exploitable buffer overflows!!!
+checking whether to drop root privileges by default... no
+checking whether to chroot... no
+checking for cap_enter... no
+checking for cap_rights_limit... no
+checking for cap_ioctls_limit... no
+checking for openat... yes
+checking whether to sandbox using capsicum... no
+checking for library containing gethostbyname... none required
+checking for library containing socket... none required
+checking for library containing putmsg... none required
+checking whether the operating system supports IPv6... yes
+checking ipv6 stack type... linux-glibc
+checking for dnet_htoa declaration in netdnet/dnetdb.h... no
+checking for vfprintf... yes
+checking for strlcat... no
+checking for strlcpy... no
+checking for strdup... yes
+checking for strsep... yes
+checking for getopt_long... yes
+checking for fork... yes
+checking for vfork... yes
+checking for strftime... yes
+checking for setlinebuf... yes
+checking for alarm... yes
+checking for vsnprintf... yes
+checking for snprintf... yes
+checking return type of signal handlers... void
+checking for sigaction... yes
+checking for library containing dnet_htoa... no
+checking for main in -lrpc... no
+checking for library containing getrpcbynumber... none required
+checking for local pcap library... not found
+checking for pcap-config... /usr/bin/pcap-config
+checking for pcap_loop... yes
+checking for ether_ntohost... yes
+checking for buggy ether_ntohost... no
+checking whether ether_ntohost is declared... no
+checking netinet/ether.h usability... yes
+checking netinet/ether.h presence... yes
+checking for netinet/ether.h... yes
+checking whether ether_ntohost is declared... yes
+checking for dlpi_walk in -ldlpi... no
+checking for pcap_list_datalinks... yes
+checking for pcap_free_datalinks... yes
+checking for pcap_set_datalink... yes
+checking for pcap_datalink_name_to_val... yes
+checking for pcap_datalink_val_to_description... yes
+checking for pcap_breakloop... yes
+checking for pcap_dump_ftell... yes
+checking for pcap_create... yes
+checking for pcap_set_tstamp_type... yes
+checking for pcap_set_tstamp_precision... yes
+checking for pcap_findalldevs... yes
+checking for pcap_dump_flush... yes
+checking for pcap_lib_version... yes
+checking for pcap_setdirection... yes
+checking for pcap_set_immediate_mode... yes
+checking for pcap_if_t... yes
+checking for pcap_set_parser_debug... no
+checking whether pcap_debug is defined by libpcap... no
+checking whether yydebug is defined by libpcap... no
+checking for pcap_set_optimizer_debug... no
+checking for bpf_dump... yes
+checking for int8_t... yes
+checking for int16_t... yes
+checking for int32_t... yes
+checking for int64_t... yes
+checking for uint8_t... yes
+checking for uint16_t... yes
+checking for uint32_t... yes
+checking for uint64_t... yes
+checking for uintptr_t... yes
+checking for u_int8_t... yes
+checking for u_int16_t... yes
+checking for u_int32_t... yes
+checking for u_int64_t... yes
+checking for inttypes.h... (cached) yes
+checking whether inttypes.h defines the PRI[doxu]64 macros... yes
+checking for pcap/bluetooth.h... yes
+checking for pcap/nflog.h... yes
+checking for pcap/usb.h... yes
+checking for ranlib... ranlib
+checking for ar... ar
+checking if sockaddr struct has the sa_len member... no
+checking if unaligned accesses fail... no
+checking whether to use OpenSSL/libressl libcrypto... yes, if available
+checking openssl/crypto.h usability... yes
+checking openssl/crypto.h presence... yes
+checking for openssl/crypto.h... yes
+checking for DES_cbc_encrypt in -lcrypto... yes
+checking openssl/evp.h usability... yes
+checking openssl/evp.h presence... yes
+checking for openssl/evp.h... yes
+checking for EVP_CIPHER_CTX_new... yes
+checking whether to use libcap-ng... yes, if available
+checking for capng_change_id in -lcap-ng... no
+checking cap-ng.h usability... no
+checking cap-ng.h presence... no
+checking for cap-ng.h... no
+checking for a BSD-compatible install... /usr/bin/install -c
+configure: creating ./config.status
+config.status: creating Makefile
+config.status: creating tcpdump.1
+config.status: creating config.h
+config.status: executing default-1 commands
