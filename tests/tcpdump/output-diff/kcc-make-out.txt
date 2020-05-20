@@ -1,0 +1,239 @@
+suwenhao@DESKTOP-AB2N496:/mnt/c/Users/suwen/Desktop/intern/tcpdump-test/kcc/tcpdump$ make
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./setsignal.c
+./setsignal.c:79:3: warning: Conversion from an integer to non-null pointer.
+
+    Implementation defined behavior (IMPL-CCV13):
+        see C11 section 6.3.2.3:5 http://rvdoc.org/C11/6.3.2.3
+        see CERT section INT36-C http://rvdoc.org/CERT/INT36-C
+
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./tcpdump.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./util.c
+if grep GIT ./VERSION >/dev/null; then \
+        read ver <./VERSION; \
+        echo $ver | tr -d '\012'; \
+        date +_%Y_%m_%d; \
+else \
+        cat ./VERSION; \
+fi | sed -e 's/.*/const char version[] = "&";/' > version.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c version.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./addrtoname.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./addrtostr.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./af.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./ascii_strcasecmp.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./checksum.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./cpack.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./gmpls.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./gmt2local.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./in_cksum.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./ipproto.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./l2vpn.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./machdep.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./nlpid.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./oui.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./parsenfsfh.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-802_11.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-802_15_4.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-ah.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-ahcp.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-aodv.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-aoe.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-ap1394.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-arcnet.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-arp.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-ascii.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-atalk.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-atm.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-babel.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-beep.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-bfd.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-bgp.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-bootp.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-bt.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-calm-fast.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-carp.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-cdp.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-cfm.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-chdlc.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-cip.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-cnfp.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-dccp.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-decnet.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-dhcp6.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-domain.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-dtp.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-dvmrp.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-eap.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-egp.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-eigrp.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-enc.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-esp.c
+./print-esp.c:192:2: error: Incompatible pointer types in initializer or function call arguments.
+
+    Constraint violation (CV-TSE2):
+        see C11 section 6.7.9:11 http://rvdoc.org/C11/6.7.9
+        see C11 section 6.5.16.1:1 http://rvdoc.org/C11/6.5.16.1
+        see CERT-C section MSC40-C http://rvdoc.org/CERT-C/MSC40-C
+        see MISRA-C section 8.1:1 http://rvdoc.org/MISRA-C/8.1
+
+./print-esp.c:710:4: error: Incompatible pointer types in initializer or function call arguments.
+
+    Constraint violation (CV-TSE2):
+        see C11 section 6.7.9:11 http://rvdoc.org/C11/6.7.9
+        see C11 section 6.5.16.1:1 http://rvdoc.org/C11/6.5.16.1
+        see CERT-C section MSC40-C http://rvdoc.org/CERT-C/MSC40-C
+        see MISRA-C section 8.1:1 http://rvdoc.org/MISRA-C/8.1
+
+./print-esp.c: In function ‘esp_print_decrypt_buffer_by_ikev2’:
+./print-esp.c:192:18: warning: passing argument 2 of ‘EVP_Cipher’ discards ‘const’ qualifier from pointer target type [-Wdiscarded-qualifiers]
+  EVP_Cipher(ctx, buf, buf, len);
+                  ^~~
+In file included from ./print-esp.c:39:0:
+/usr/include/openssl/evp.h:520:16: note: expected ‘unsigned char *’ but argument is of type ‘const u_char * {aka const unsigned char *}’
+ /*__owur*/ int EVP_Cipher(EVP_CIPHER_CTX *c,
+                ^~~~~~~~~~
+./print-esp.c: In function ‘esp_print’:
+./print-esp.c:710:20: warning: passing argument 2 of ‘EVP_Cipher’ discards ‘const’ qualifier from pointer target type [-Wdiscarded-qualifiers]
+    EVP_Cipher(ctx, p + ivlen, p + ivlen, ep - (p + ivlen));
+                    ^
+In file included from ./print-esp.c:39:0:
+/usr/include/openssl/evp.h:520:16: note: expected ‘unsigned char *’ but argument is of type ‘const u_char * {aka const unsigned char *}’
+ /*__owur*/ int EVP_Cipher(EVP_CIPHER_CTX *c,
+                ^~~~~~~~~~
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-ether.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-fddi.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-forces.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-fr.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-frag6.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-ftp.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-geneve.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-geonet.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-gre.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-hncp.c
+./print-hncp.c: In function ‘format_256’:
+./print-hncp.c:154:26: warning: ‘%016lx’ directive output truncated writing 16 bytes into a region of size 12 [-Wformat-truncation=]
+     snprintf(buf[i], 28, "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64,
+                          ^~~~~~
+./print-hncp.c:154:41: note: format string is defined here
+     snprintf(buf[i], 28, "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64,
+./print-hncp.c:154:5: note: ‘snprintf’ output 65 bytes into a destination of size 28
+     snprintf(buf[i], 28, "%016" PRIx64 "%016" PRIx64 "%016" PRIx64 "%016" PRIx64,
+     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+          EXTRACT_64BITS(data),
+          ~~~~~~~~~~~~~~~~~~~~~
+          EXTRACT_64BITS(data + 8),
+          ~~~~~~~~~~~~~~~~~~~~~~~~~
+          EXTRACT_64BITS(data + 16),
+          ~~~~~~~~~~~~~~~~~~~~~~~~~~
+          EXTRACT_64BITS(data + 24)
+          ~~~~~~~~~~~~~~~~~~~~~~~~~
+     );
+     ~
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-hsrp.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-http.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-icmp.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-icmp6.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-igmp.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-igrp.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-ip.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-ip6.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-ip6opts.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-ipcomp.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-ipfc.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-ipnet.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-ipx.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-isakmp.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-isoclns.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-juniper.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-krb.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-l2tp.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-lane.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-ldp.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-lisp.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-llc.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-lldp.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-lmp.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-loopback.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-lspping.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-lwapp.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-lwres.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-m3ua.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-medsa.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-mobile.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-mobility.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-mpcp.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-mpls.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-mptcp.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-msdp.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-msnlb.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-nflog.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-nfs.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-nsh.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-ntp.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-null.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-olsr.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-openflow-1.0.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-openflow.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-ospf.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-ospf6.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-otv.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-pgm.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-pim.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-pktap.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-ppi.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-ppp.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-pppoe.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-pptp.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-radius.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-raw.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-resp.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-rip.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-ripng.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-rpki-rtr.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-rrcp.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-rsvp.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-rt6.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-rtsp.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-rx.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-sctp.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-sflow.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-sip.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-sl.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-sll.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-slow.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-smtp.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-snmp.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-stp.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-sunatm.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-sunrpc.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-symantec.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-syslog.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-tcp.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-telnet.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-tftp.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-timed.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-tipc.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-token.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-udld.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-udp.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-usb.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-vjc.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-vqp.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-vrrp.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-vtp.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-vxlan.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-vxlan-gpe.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-wb.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-zephyr.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-zeromq.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./signature.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./strtoaddr.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./util-print.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./print-smb.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -c ./smbutil.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -o strlcat.o -c ./missing/strlcat.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -o strlcpy.o -c ./missing/strlcpy.c
+kcc -std=gnu11 -O -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/include  -I/usr/local/include -g -L/usr/local/lib -o tcpdump setsignal.o tcpdump.o util.o version.o addrtoname.o addrtostr.o af.o ascii_strcasecmp.o checksum.o cpack.o gmpls.o gmt2local.o in_cksum.o ipproto.o l2vpn.o machdep.o nlpid.o oui.o parsenfsfh.o print.o print-802_11.o print-802_15_4.o print-ah.o print-ahcp.o print-aodv.o print-aoe.o print-ap1394.o print-arcnet.o print-arp.o print-ascii.o print-atalk.o print-atm.o print-babel.o print-beep.o print-bfd.o print-bgp.o print-bootp.o print-bt.o print-calm-fast.o print-carp.o print-cdp.o print-cfm.o print-chdlc.o print-cip.o print-cnfp.o print-dccp.o print-decnet.o print-dhcp6.o print-domain.o print-dtp.o print-dvmrp.o print-eap.o print-egp.o print-eigrp.o print-enc.o print-esp.o print-ether.o print-fddi.o print-forces.o print-fr.o print-frag6.o print-ftp.o print-geneve.o print-geonet.o print-gre.o print-hncp.o print-hsrp.o print-http.o print-icmp.o print-icmp6.o print-igmp.o print-igrp.o print-ip.o print-ip6.o print-ip6opts.o print-ipcomp.o print-ipfc.o print-ipnet.o print-ipx.o print-isakmp.o print-isoclns.o print-juniper.o print-krb.o print-l2tp.o print-lane.o print-ldp.o print-lisp.o print-llc.o print-lldp.o print-lmp.o print-loopback.o print-lspping.o print-lwapp.o print-lwres.o print-m3ua.o print-medsa.o print-mobile.o print-mobility.o print-mpcp.o print-mpls.o print-mptcp.o print-msdp.o print-msnlb.o print-nflog.o print-nfs.o print-nsh.o print-ntp.o print-null.o print-olsr.o print-openflow-1.0.o print-openflow.o print-ospf.o print-ospf6.o print-otv.o print-pgm.o print-pim.o print-pktap.o print-ppi.o print-ppp.o print-pppoe.o print-pptp.o print-radius.o print-raw.o print-resp.o print-rip.o print-ripng.o print-rpki-rtr.o print-rrcp.o print-rsvp.o print-rt6.o print-rtsp.o print-rx.o print-sctp.o print-sflow.o print-sip.o print-sl.o print-sll.o print-slow.o print-smtp.o print-snmp.o print-stp.o print-sunatm.o print-sunrpc.o print-symantec.o print-syslog.o print-tcp.o print-telnet.o print-tftp.o print-timed.o print-tipc.o print-token.o print-udld.o print-udp.o print-usb.o print-vjc.o print-vqp.o print-vrrp.o print-vtp.o print-vxlan.o print-vxlan-gpe.o print-wb.o print-zephyr.o print-zeromq.o signature.o strtoaddr.o util-print.o print-smb.o smbutil.o strlcat.o strlcpy.o -lcrypto -lpcap
+ar cr libnetdissect.a addrtoname.o addrtostr.o af.o ascii_strcasecmp.o checksum.o cpack.o gmpls.o gmt2local.o in_cksum.o ipproto.o l2vpn.o machdep.o nlpid.o oui.o parsenfsfh.o print.o print-802_11.o print-802_15_4.o print-ah.o print-ahcp.o print-aodv.o print-aoe.o print-ap1394.o print-arcnet.o print-arp.o print-ascii.o print-atalk.o print-atm.o print-babel.o print-beep.o print-bfd.o print-bgp.o print-bootp.o print-bt.o print-calm-fast.o print-carp.o print-cdp.o print-cfm.o print-chdlc.o print-cip.o print-cnfp.o print-dccp.o print-decnet.o print-dhcp6.o print-domain.o print-dtp.o print-dvmrp.o print-eap.o print-egp.o print-eigrp.o print-enc.o print-esp.o print-ether.o print-fddi.o print-forces.o print-fr.o print-frag6.o print-ftp.o print-geneve.o print-geonet.o print-gre.o print-hncp.o print-hsrp.o print-http.o print-icmp.o print-icmp6.o print-igmp.o print-igrp.o 
+print-ip.o print-ip6.o print-ip6opts.o print-ipcomp.o print-ipfc.o print-ipnet.o print-ipx.o print-isakmp.o print-isoclns.o print-juniper.o print-krb.o print-l2tp.o print-lane.o print-ldp.o print-lisp.o print-llc.o print-lldp.o print-lmp.o print-loopback.o print-lspping.o print-lwapp.o print-lwres.o print-m3ua.o print-medsa.o print-mobile.o print-mobility.o print-mpcp.o print-mpls.o print-mptcp.o print-msdp.o print-msnlb.o print-nflog.o print-nfs.o print-nsh.o print-ntp.o print-null.o print-olsr.o print-openflow-1.0.o print-openflow.o print-ospf.o print-ospf6.o print-otv.o print-pgm.o print-pim.o print-pktap.o print-ppi.o print-ppp.o print-pppoe.o print-pptp.o print-radius.o print-raw.o print-resp.o print-rip.o print-ripng.o print-rpki-rtr.o print-rrcp.o print-rsvp.o print-rt6.o print-rtsp.o print-rx.o print-sctp.o print-sflow.o print-sip.o print-sl.o print-sll.o print-slow.o print-smtp.o print-snmp.o print-stp.o print-sunatm.o print-sunrpc.o print-symantec.o print-syslog.o print-tcp.o print-telnet.o print-tftp.o print-timed.o print-tipc.o print-token.o print-udld.o print-udp.o print-usb.o print-vjc.o print-vqp.o print-vrrp.o print-vtp.o print-vxlan.o print-vxlan-gpe.o print-wb.o print-zephyr.o print-zeromq.o signature.o strtoaddr.o util-print.o print-smb.o smbutil.o strlcat.o strlcpy.o
+ranlib libnetdissect.a
