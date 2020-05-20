@@ -122,3 +122,51 @@ kcc -O -std=gnu11 -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/i
      );
      ~
 ```
+
+### Followup
+
+Here is the code for function `pcap_loop`:
+
+```
+pcap.h:
+
+...
+PCAP_API int	pcap_loop(pcap_t *, int, pcap_handler, u_char *);
+...
+```
+
+```
+pcap.c:
+
+...
+int
+pcap_loop(pcap_t *p, int cnt, pcap_handler callback, u_char *user)
+{
+	register int n;
+
+	for (;;) {
+		if (p->rfile != NULL) {
+			/*
+			 * 0 means EOF, so don't loop if we get 0.
+			 */
+			n = pcap_offline_read(p, cnt, callback, user);
+		} else {
+			/*
+			 * XXX keep reading until we get something
+			 * (or an error occurs)
+			 */
+			do {
+				n = p->read_op(p, cnt, callback, user);
+			} while (n == 0);
+		}
+		if (n <= 0)
+			return (n);
+		if (!PACKET_COUNT_IS_UNLIMITED(cnt)) {
+			cnt -= n;
+			if (cnt <= 0)
+				return (0);
+		}
+	}
+}
+...
+```
