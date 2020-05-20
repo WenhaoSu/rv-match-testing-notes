@@ -127,7 +127,7 @@ kcc -O -std=gnu11 -DHAVE_CONFIG_H   -D_U_="__attribute__((unused))" -I. -I/usr/i
 
 Here is the code for function `pcap_loop`:
 
-```
+```c
 pcap.h:
 
 ...
@@ -135,7 +135,7 @@ PCAP_API int	pcap_loop(pcap_t *, int, pcap_handler, u_char *);
 ...
 ```
 
-```
+```c
 pcap.c:
 
 ...
