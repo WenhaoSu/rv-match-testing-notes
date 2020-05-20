@@ -170,3 +170,25 @@ pcap_loop(pcap_t *p, int cnt, pcap_handler callback, u_char *user)
 }
 ...
 ```
+---
+Following are two external links that may provide useful information for debugging:
+* Same problem of `Variadic arguments in function pointer.`: https://github.com/the-tcpdump-group/tcpdump/issues/666
+* Same problem of `Fatal error: exception (Invalid_argument "mismatched constructor at top of split configuration")`:https://github.com/kframework/c-semantics/issues/512
+---
+One observation: if we change line 1766-1768 in `tcpdump.c` to the following code:
+```c
+...
+	do {
+		// status = pcap_loop(pd, cnt, callback, pcap_userdata);
+		printf("Here should be where pcap_loop start to execute.");
+		status = -1;
+		if (WFileName == NULL) {
+...
+```
+Then the compiled `tcpdump` execution file won't give fatal error, while the execution result is as expected:
+```
+$ ../tcpdump -S -t -q -n -r ./isup.pcap
+reading from file ./isup.pcap, link-type EN10MB (Ethernet)
+Here should be where pcap_loop start to execute.tcpdump: pcap_loop:
+```
+
