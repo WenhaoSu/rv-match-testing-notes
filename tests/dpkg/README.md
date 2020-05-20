@@ -27,7 +27,7 @@ The source code of `dpkg` can be found [here]( https://salsa.debian.org/dpkg-tea
     names[2]="make check"
     make -j`nproc` check |& tee rv_build_2.txt ; results[2]="$?" ; postup 2
 ````    
-```
+
 
 ### Building with kcc
 ```
