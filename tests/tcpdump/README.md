@@ -27,9 +27,9 @@ make
 
 
 ### Test
-Run `./spin` on `pml` files in `Spin/Examples/`.
 ```
-./spin ../Examples/hello.pml
+cd tests/
+bash TESTrun.sh
 ```
 
 
