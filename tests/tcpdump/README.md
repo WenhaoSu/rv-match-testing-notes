@@ -327,3 +327,155 @@ p->getnonblock_op = airpcap_getnonblock;
 ```
 Here there are another about 20 cases of different possible `getnonblock_op` assignments.
 A possible approach here is to replicate this situation: write a simple testing program with function pointers in struct, and see what will happen if we call them in the way tcpdump did.
+
+---
+Here is the complete code for struct `pcap`:
+```c
+struct pcap {
+	/*
+	 * Method to call to read packets on a live capture.
+	 */
+	read_op_t read_op;
+
+	/*
+	 * Method to call to read the next packet from a savefile.
+	 */
+	next_packet_op_t next_packet_op;
+
+#ifdef _WIN32
+	HANDLE handle;
+#else
+	int fd;
+	int selectable_fd;
+#endif /* _WIN32 */
+
+	/*
+	 * Read buffer.
+	 */
+	u_int bufsize;
+	void *buffer;
+	u_char *bp;
+	int cc;
+
+	sig_atomic_t break_loop; /* flag set to force break from packet-reading loop */
+
+	void *priv;		/* private data for methods */
+
+#ifdef ENABLE_REMOTE
+	struct pcap_samp rmt_samp;	/* parameters related to the sampling process. */
+#endif
+
+	int swapped;
+	FILE *rfile;		/* null if live capture, non-null if savefile */
+	u_int fddipad;
+	struct pcap *next;	/* list of open pcaps that need stuff cleared on close */
+
+	/*
+	 * File version number; meaningful only for a savefile, but we
+	 * keep it here so that apps that (mistakenly) ask for the
+	 * version numbers will get the same zero values that they
+	 * always did.
+	 */
+	int version_major;
+	int version_minor;
+
+	int snapshot;
+	int linktype;		/* Network linktype */
+	int linktype_ext;       /* Extended information stored in the linktype field of a file */
+	int tzoff;		/* timezone offset */
+	int offset;		/* offset for proper alignment */
+	int activated;		/* true if the capture is really started */
+	int oldstyle;		/* if we're opening with pcap_open_live() */
+
+	struct pcap_opt opt;
+
+	/*
+	 * Place holder for pcap_next().
+	 */
+	u_char *pkt;
+
+#ifdef _WIN32
+	struct pcap_stat stat;		/* used for pcap_stats_ex() */
+#endif
+
+	/* We're accepting only packets in this direction/these directions. */
+	pcap_direction_t direction;
+
+	/*
+	 * Flags to affect BPF code generation.
+	 */
+	int bpf_codegen_flags;
+
+	/*
+	 * Placeholder for filter code if bpf not in kernel.
+	 */
+	struct bpf_program fcode;
+
+	char errbuf[PCAP_ERRBUF_SIZE + 1];
+	int dlt_count;
+	u_int *dlt_list;
+	int tstamp_type_count;
+	u_int *tstamp_type_list;
+	int tstamp_precision_count;
+	u_int *tstamp_precision_list;
+
+	struct pcap_pkthdr pcap_header;	/* This is needed for the pcap_next_ex() to work */
+
+	/*
+	 * More methods.
+	 */
+	activate_op_t activate_op;
+	can_set_rfmon_op_t can_set_rfmon_op;
+	inject_op_t inject_op;
+	save_current_filter_op_t save_current_filter_op;
+	setfilter_op_t setfilter_op;
+	setdirection_op_t setdirection_op;
+	set_datalink_op_t set_datalink_op;
+	getnonblock_op_t getnonblock_op;
+	setnonblock_op_t setnonblock_op;
+	stats_op_t stats_op;
+
+	/*
+	 * Routine to use as callback for pcap_next()/pcap_next_ex().
+	 */
+	pcap_handler oneshot_callback;
+
+#ifdef _WIN32
+	/*
+	 * These are, at least currently, specific to the Win32 NPF
+	 * driver.
+	 */
+	stats_ex_op_t stats_ex_op;
+	setbuff_op_t setbuff_op;
+	setmode_op_t setmode_op;
+	setmintocopy_op_t setmintocopy_op;
+	getevent_op_t getevent_op;
+	oid_get_request_op_t oid_get_request_op;
+	oid_set_request_op_t oid_set_request_op;
+	sendqueue_transmit_op_t sendqueue_transmit_op;
+	setuserbuffer_op_t setuserbuffer_op;
+	live_dump_op_t live_dump_op;
+	live_dump_ended_op_t live_dump_ended_op;
+	get_airpcap_handle_op_t get_airpcap_handle_op;
+#endif
+	cleanup_op_t cleanup_op;
+};
+```
+
+while all methods in `pcap` are defined as
+```c
+typedef int	(*activate_op_t)(pcap_t *);
+typedef int	(*can_set_rfmon_op_t)(pcap_t *);
+typedef int	(*read_op_t)(pcap_t *, int cnt, pcap_handler, u_char *);
+typedef int	(*next_packet_op_t)(pcap_t *, struct pcap_pkthdr *, u_char **);
+typedef int	(*inject_op_t)(pcap_t *, const void *, size_t);
+typedef void	(*save_current_filter_op_t)(pcap_t *, const char *);
+typedef int	(*setfilter_op_t)(pcap_t *, struct bpf_program *);
+typedef int	(*setdirection_op_t)(pcap_t *, pcap_direction_t);
+typedef int	(*set_datalink_op_t)(pcap_t *, int);
+typedef int	(*getnonblock_op_t)(pcap_t *);
+typedef int	(*setnonblock_op_t)(pcap_t *, int);
+typedef int	(*stats_op_t)(pcap_t *, struct pcap_stat *);
+```
+
+What is strange here is that there seems to be no variadic functions. Maybe kcc is treating some of them as variadic functions, so it throw that error message?
