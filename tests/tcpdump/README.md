@@ -205,7 +205,7 @@ Observation: if we change line 1766-1768 in `tcpdump.c` to the following code:
 		if (WFileName == NULL) {
 ...
 ```
-Then the compiled `tcpdump` execution file by `gcc` will execute normally, while `kcc` will give same error message:
+Then the compiled `tcpdump` execution file by `gcc` will execute normally, while `kcc` will give same error message (it failed whrn running `pcap_dispatch`):
 ```
 $ ../tcpdump -S -t -q -n -r ./isup.pcap
 reading from file ./isup.pcap, link-type EN10MB (Ethernet)
@@ -214,6 +214,21 @@ Try to get some message:3
 Failed to execute native function pcap_dispatch successfully. Reason: Variadic arguments in function pointer.
 Fatal error: exception (Invalid_argument "mismatched constructor at top of split configuration")
 ```
+This means that kcc can run `pcap_get_selectable_fd`, whose code is:
+```c
+int
+pcap_get_selectable_fd(pcap_t *p)
+{
+	return (p->selectable_fd);
+}
+```
+```c
+struct pcap {
+...
+	int selectable_fd;	/* FD on which select()/poll()/epoll_wait()/kevent()/etc. can be done */
+...
+```
+This means that we can safely access the non-function members, such as `int` in struct `pcap`.
 
 The funtion `pcap_dispatch` has the exactly same function signature with `pcap_loop`:
 ```c
