@@ -228,7 +228,7 @@ pcap_dispatch(pcap_t *p, int cnt, pcap_handler callback, u_char *user)
 	return (p->read_op(p, cnt, callback, user));
 }
 ```
-Hence, it is reasonable to locate the problem to the function `p->read_op`, and I guess `p->read_op` is exactly the function pointer that `kcc` believe has "variadic arguments".
+Hence, it is reasonable to locate the problem to the function `p->read_op`, and I guess things like `p->read_op` is exactly the function pointer that `kcc` believe has "variadic arguments".
 
 The function signature of `read_op` is:
 ```
@@ -245,3 +245,70 @@ p->read_op = pcap_read_bpf;
 
 ...
 ```
+
+---
+Observation: if we change line 1766-1768 in `tcpdump.c` to the following code:
+```c
+...
+do {
+		// status = pcap_loop(pd, cnt, callback, pcap_userdata);
+		printf("Here should be where pcap_getnonblock start to execute.\n");
+		status = pcap_getnonblock(pd, pcap_userdata);
+		status = -1;
+		if (WFileName == NULL) {
+...
+```
+The gcc version of code will run normally while the kcc version will give:
+```
+$ ../tcpdump -S -t -q -n -r ./isup.pcap
+reading from file ./isup.pcap, link-type EN10MB (Ethernet)
+Here should be where pcap_getnonblock start to execute.
+Failed to execute native function pcap_getnonblock successfully. Reason: Variadic arguments in function pointer.
+Fatal error: exception (Invalid_argument "mismatched constructor at top of split configuration")
+```
+This is exactly the same error message as before, except changing `pcap_loop` to `pcap_getnonblock`. So what's in common with `pcap_loop` and `pcap_getnonblock`? Here's the code for `pcap_getnonblock`:
+```c
+int
+pcap_getnonblock(pcap_t *p, char *errbuf)
+{
+	int ret;
+
+	ret = p->getnonblock_op(p);
+	if (ret == -1) {
+		/*
+		 * The get nonblock operation sets p->errbuf; this
+		 * function *shouldn't* have had a separate errbuf
+		 * argument, as it didn't need one, but I goofed
+		 * when adding it.
+		 *
+		 * We copy the error message to errbuf, so callers
+		 * can find it in either place.
+		 */
+		pcap_strlcpy(errbuf, p->errbuf, PCAP_ERRBUF_SIZE);
+	}
+	return (ret);
+}
+```
+
+What's in common with `pcap_loop` and `pcap_dispatch` is that they all **called one of the function inside struct pcap:**
+```c
+struct pcap {
+	/*
+	 * Method to call to read packets on a live capture.
+	 */
+	read_op_t read_op;
+...
+     /*
+	 * More methods.
+	 */
+	getnonblock_op_t getnonblock_op;
+...
+```
+where those functions are further assigned in other codes:
+```c
+pcap-airpcap.c:
+
+p->getnonblock_op = airpcap_getnonblock;
+```
+Here there are another about 20 cases of different possible `getnonblock_op` assignments.
+A possible approach here is to replicate this situation: write a simple testing program with function pointers in struct, and see what will happen if we call them in the way tcpdump did.
