@@ -175,7 +175,7 @@ Following are two external links that may provide useful information for debuggi
 * Same problem of `Variadic arguments in function pointer.`: https://github.com/the-tcpdump-group/tcpdump/issues/666
 * Same problem of `Fatal error: exception (Invalid_argument "mismatched constructor at top of split configuration")`:https://github.com/kframework/c-semantics/issues/512
 ---
-One observation: if we change line 1766-1768 in `tcpdump.c` to the following code:
+Observation: if we change line 1766-1768 in `tcpdump.c` to the following code:
 ```c
 ...
 	do {
@@ -191,4 +191,57 @@ $ ../tcpdump -S -t -q -n -r ./isup.pcap
 reading from file ./isup.pcap, link-type EN10MB (Ethernet)
 Here should be where pcap_loop start to execute.tcpdump: pcap_loop:
 ```
+This means `pcap_loop` is likely to be the only single issue that causes kcc's failure.
 
+---
+Observation: if we change line 1766-1768 in `tcpdump.c` to the following code:
+```c
+...
+	do {
+		// status = pcap_loop(pd, cnt, callback, pcap_userdata);
+		printf("Here should be where pcap_loop start to execute.\n");
+		printf("Try to get some message:%d\n", pcap_get_selectable_fd(pd));
+		status = pcap_dispatch(pd, cnt, callback, pcap_userdata);
+		if (WFileName == NULL) {
+...
+```
+Then the compiled `tcpdump` execution file by `gcc` will execute normally, while `kcc` will give same error message:
+```
+$ ../tcpdump -S -t -q -n -r ./isup.pcap
+reading from file ./isup.pcap, link-type EN10MB (Ethernet)
+Here should be where pcap_loop start to execute.
+Try to get some message:3
+Failed to execute native function pcap_dispatch successfully. Reason: Variadic arguments in function pointer.
+Fatal error: exception (Invalid_argument "mismatched constructor at top of split configuration")
+```
+
+The funtion `pcap_dispatch` has the exactly same function signature with `pcap_loop`:
+```c
+PCAP_API int	pcap_loop(pcap_t *, int, pcap_handler, u_char *);
+PCAP_API int	pcap_dispatch(pcap_t *, int, pcap_handler, u_char *);
+```
+and here is the code of function `pcap_dispatch`:
+```c
+int
+pcap_dispatch(pcap_t *p, int cnt, pcap_handler callback, u_char *user)
+{
+	return (p->read_op(p, cnt, callback, user));
+}
+```
+Hence, it is reasonable to locate the problem to the function `p->read_op`, and I guess `p->read_op` is exactly the function pointer that `kcc` believe has "variadic arguments".
+
+The function signature of `read_op` is:
+```
+typedef int	(*read_op_t)(pcap_t *, int cnt, pcap_handler, u_char *);
+```
+
+The detailed implementation of `read_op` varies for different types of `pcap_t`. There are nearly 30 different possible `read_op` assignments, and here are two of them:
+```c
+pcap-airpcap.c:
+p->read_op = airpcap_read;
+
+pcap-bof.c:
+p->read_op = pcap_read_bpf;
+
+...
+```
