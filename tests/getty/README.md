@@ -232,3 +232,16 @@ Translation failed (kcc_config dumped). To repeat, run this command in directory
 kcc -d test.c -o ktest
 ```
 However, `gcc` is able to compile the code above. This means that `kcc` does not recognize the syntax as described above.
+By adding `#define __attribute_nonstring__` to the above program, then `kcc` will manage to compile the following code:
+```c
+#include <stdio.h>
+#define UT_LINESIZE	32
+#define __attribute_nonstring__
+
+int main (int argc, char ** argv) {
+    char ut_line[UT_LINESIZE]
+    __attribute_nonstring__;
+    return 0;
+}
+```
+This means that unlike `gcc` who supports the `nonstring` attribute, `kcc` does not recognize it.
