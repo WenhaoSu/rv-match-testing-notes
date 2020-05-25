@@ -709,3 +709,183 @@ Type of lvalue (struct <anonymous at types.h:62>) not compatible with the effect
       > in xnew_STRING at memory.c:43:5
 ```
 but what does it mean here by saying `struct <anonymous at types.h:62>` (probably it is saying about `STRING`, but why anonymous?) and `struct hash`?
+
+---
+Observation: I try to build a single c program that includes all the logic inside the error message for `OFS->ptr = (PTR) new_STRING(" ");`. The program is as following:
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define  STRING_OH   (sizeof(STRING)-1)
+typedef void *PTR;
+#define Malloc(n) malloc(n)
+
+#define ZSHIFT      3
+#define ZBLOCKSZ    BlocksToBytes(1)
+#define POOLSZ	    16
+#define	CHUNK		256
+
+short mawk_state = 1;
+#define EXECUTION       1
+
+#define RecordPtr(ptr,size)
+
+#define IsPoolable(blocks)  ((blocks) <= POOLSZ)
+
+#define BytesToBlocks(size) ((((unsigned)size) + ZBLOCKSZ - 1) >> ZSHIFT)
+#define BlocksToBytes(size) ((size) << ZSHIFT)
+
+typedef struct {
+    size_t len;
+    unsigned ref_cnt;
+    char str[2];
+} STRING;
+
+typedef union zblock {
+    char dummy[ZBLOCKSZ];
+    union zblock *link;
+} ZBLOCK;
+
+typedef struct cell {
+    short type;
+    PTR ptr;
+    double dval;
+} CELL;
+
+static ZBLOCK *pool[POOLSZ];
+
+#define  NUM_BI_VAR  9
+CELL bi_vars[NUM_BI_VAR];
+#define  ORS       (bi_vars+5)
+
+STRING null_str =
+{0, 1, ""};
+
+static void
+out_of_mem(void)
+{
+    static char out[] = "out of memory";
+    printf("here\n");
+}
+
+PTR
+zmalloc(size_t size)
+{
+    unsigned blocks = BytesToBlocks(size);
+    size_t bytes = (size_t) BlocksToBytes(blocks);
+    register ZBLOCK *p;
+    static unsigned amt_avail;
+    static ZBLOCK *avail;
+
+    if (!IsPoolable(blocks)) {
+	p = (ZBLOCK *) Malloc(bytes);
+	if (!p)
+	    out_of_mem();
+	RecordPtr(p, size);
+    } else {
+
+	if ((p = pool[blocks - 1]) != 0) {
+	    pool[blocks - 1] = p->link;
+	} else {
+
+	    if (blocks > amt_avail) {
+		if (amt_avail != 0)	/* free avail */
+		{
+		    avail->link = pool[--amt_avail];
+		    pool[amt_avail] = avail;
+		}
+
+		if (!(avail = (ZBLOCK *) Malloc((size_t) (CHUNK * ZBLOCKSZ)))) {
+		    /* if we get here, almost out of memory */
+		    amt_avail = 0;
+		    p = (ZBLOCK *) Malloc(bytes);
+		    if (!p)
+			out_of_mem();
+		    RecordPtr(p, bytes);
+		    return (PTR) p;
+		} else {
+		    RecordPtr(avail, CHUNK * ZBLOCKSZ);
+		    amt_avail = CHUNK;
+		}
+	    }
+
+	    /* get p from the avail pile */
+	    p = avail;
+	    avail += blocks;
+	    amt_avail -= blocks;
+	}
+    }
+    return (PTR) p;
+}
+
+static STRING *
+xnew_STRING(size_t len)
+{
+    STRING *sval = (STRING *) zmalloc(len + STRING_OH);
+
+    sval->len = len;
+    sval->ref_cnt = 1;
+    return sval;
+}
+
+STRING *
+new_STRING(const char *s)
+{
+    if (s[0] == 0) {
+	null_str.ref_cnt++;
+	return &null_str;
+    } else {
+	STRING *sval = xnew_STRING(strlen(s));
+	strcpy(sval->str, s);
+	return sval;
+    }
+}
+
+int main (int argc, char ** argv) {
+    ORS->ptr = (PTR) new_STRING("\n");
+    return 0;
+}
+```
+Here all functions and logics that are used by `ORS->ptr = (PTR) new_STRING("\n");` is included. However, `kcc` succeeded in running this program.
+
+
+---
+For the error related to `arc4random_push`, it is also reported in the build stage. Here `kcc` is mainly complaining that it couldn't find how the function `mawk_srand()` is defined. Here `mawk_srand` is a macro defined in `config.h` with
+```c
+#define mawk_rand arc4random
+#define mawk_srand arc4random_push
+```
+However, we failed to trace the definition of `arc4random` as well by using the tracing function of VS Code. Clues for finding `arc4random` inside this project are following:
+```c
+bi_func.c:
+
+...
+#if defined(mawk_srand) || defined(mawk_rand)
+#define USE_SYSTEM_SRAND
+#endif
+
+#if defined(HAVE_BSD_STDLIB_H) && defined(USE_SYSTEM_SRAND)
+#include <bsd/stdlib.h>		/* prototype arc4random */
+#endif
+...
+
+```
+```shell
+configure:
+
+...
+cf_cv_srand_func=unknown
+for cf_func in arc4random_push/arc4random arc4random_stir/arc4random srandom/random srand48/lrand48 srand/rand
+do
+
+	cf_srand_func=`echo $cf_func | sed -e 's%/.*%%'`
+	cf_rand_func=`echo $cf_func | sed -e 's%.*/%%'`
+
+	case $cf_srand_func in
+	(arc4random_stir)
+		cf_srand_func='(void)'
+		;;
+	esac
+...
+```
