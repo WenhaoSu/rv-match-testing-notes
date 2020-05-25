@@ -576,3 +576,136 @@ No definition found for identifier arc4random_push:
 
 Execution failed (configuration dumped)
 ```
+
+### Followup
+
+If we run `../mawk -f wc.awk mawktest.dat` under `tests` folder, `gcc` would run normally and return the word count, while `kcc` fails to execute normally, and return the exactly same error message as above.
+
+If we look deep into the error message, we can find that `kcc` is mainly complaining about the `Type of lvalue not compatible with the effective type of the object being accessed` error for following lines:
+```
+bi_vars_init at bi_vars.c:81:6
+bi_vars_init at bi_vars.c:84:6
+bi_vars_init at bi_vars.c:87:6
+
+bi_funct_init at bi_funct.c:97:5
+bi_funct_init at bi_funct.c:98:5
+bi_funct_init at bi_funct.c:99:5
+bi_funct_init at bi_funct.c:102:2
+bi_funct_init at bi_funct.c:103:2
+bi_funct_init at bi_funct.c:104:2
+```
+while the samiliar error message is reported several times. Take `bi_funct_init at bi_funct.c:99:5` as example (only difference is *Type of lvalue*):
+```
+Type of lvalue (struct <anonymous at ./symtype.h:85>) not compatible with the effective type of the object being accessed (struct hash):
+      > in bi_funct_init at bi_funct.c:99:5
+        in initialize at init.c:73:5
+        in main at main.c:47:5
+
+Type of lvalue (union <anonymous at ./symtype.h:85>) not compatible with the effective type of the object being accessed (struct hash):
+      > in bi_funct_init at bi_funct.c:99:5
+        in initialize at init.c:73:5
+        in main at main.c:47:5
+
+Type of lvalue (const struct <anonymous at ./symtype.h:25> *) not compatible with the effective type of the object being accessed (struct hash):
+      > in bi_funct_init at bi_funct.c:99:5
+        in initialize at init.c:73:5
+        in main at main.c:47:5
+```
+
+and there is another type of error complaining about `No definition found for identifier arc4random_push` in:
+```
+bi_srand at bi_funct.c:805:5
+```
+---
+
+Here is the function `bi_vars_init` in `bi_vars.c`
+
+```c
+void
+bi_vars_init(void)
+{
+    register int i;
+    register SYMTAB *s;
+
+    for (i = 0; i < NUM_BI_VAR; i++) {
+	s = insert(bi_var_names[i]);
+	s->type = (char) ((i <= 1) ? ST_NR : ST_VAR);
+	s->stval.cp = bi_vars + i;
+	/* bi_vars[i].type = 0 which is C_NOINIT */
+    }
+
+    s = insert("ENVIRON");
+    s->type = ST_ENV;
+
+    /* set defaults */
+
+    FILENAME->type = C_STRING;
+    FILENAME->ptr = (PTR) new_STRING("");
+
+    OFS->type = C_STRING;
+    OFS->ptr = (PTR) new_STRING(" ");           // Line 81, error here
+
+    ORS->type = C_STRING;
+    ORS->ptr = (PTR) new_STRING("\n");          // Line 84, error here
+
+    SUBSEP->type = C_STRING;
+    SUBSEP->ptr = (PTR) new_STRING("\034");     // Line 87, error here
+
+    NR->type = FNR->type = C_DOUBLE;
+    /* dval is already 0.0 */
+
+#if USE_BINMODE
+    BINMODE->type = C_DOUBLE;
+#endif
+}
+```
+
+The root error for those lines related to the following two functions:
+```
+xnew_STRING at memory.c:43:5/44:5
+new_STRING at memory.c:90:2/91.2
+```
+and below are the code for those two functions:
+```c
+STRING null_str = {0, 1, ""};
+
+static STRING *
+xnew_STRING(size_t len)
+{
+    STRING *sval = (STRING *) zmalloc(len + STRING_OH);
+
+    sval->len = len;                        // Line 43, error here
+    sval->ref_cnt = 1;                      // Line 44, error here
+    return sval;
+}
+
+/* convert char* to STRING* */
+
+STRING *
+new_STRING(const char *s)
+{
+
+    if (s[0] == 0) {
+	null_str.ref_cnt++;
+	return &null_str;
+    } else {
+	STRING *sval = xnew_STRING(strlen(s));  // Line 90, error here
+	strcpy(sval->str, s);                   // Line 91, error here
+	return sval;
+    }
+}
+```
+while the struct of `STRING` is also defined by mawk at line 62 in `types.h`:
+```c
+typedef struct {
+    size_t len;
+    unsigned ref_cnt;
+    char str[2];
+} STRING;
+```
+The thing quite strange here is that, e.g., the first error message says:
+```
+Type of lvalue (struct <anonymous at types.h:62>) not compatible with the effective type of the object being accessed (struct hash):
+      > in xnew_STRING at memory.c:43:5
+```
+but what does it mean here by saying `struct <anonymous at types.h:62>` (probably it is saying about `STRING`, but why anonymous?) and `struct hash`?
