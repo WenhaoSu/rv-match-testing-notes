@@ -83,3 +83,41 @@ However, `kcc` falied to produce the executable file.
 ### Followup
 
 If we use other profiles for testing, then `kcc` will fail on `syntax error`. After testing, we found that only `x86_64-linux-gcc-glibc-gnuc` and `x86_64-linux-gcc-glibc-gnuc-reverse-eval-order` profiles can provide the error shown above, while others fail to parse the synatx at the beginning.
+
+---
+Observation: the error message seems to come from line 542 of `math.h`:
+```c
+...
+#  if __HAVE_FLOATN_NOT_TYPEDEF
+#   error "Non-typedef _FloatN but no _Generic."
+#  endif
+...
+```
+where `__HAVE_FLOATN_NOT_TYPEDEF` comes from line 62-66 in `floatn-common.h`:
+```c
+...
+#if __GNUC_PREREQ (7, 0) && !defined __cplusplus
+# define __HAVE_FLOATN_NOT_TYPEDEF 1
+#else
+# define __HAVE_FLOATN_NOT_TYPEDEF 0
+#endif
+...
+```
+here `__GNUC_PREREQ` is a macro defined as following in `features.h`:
+```c
+...
+/* Convenience macro to test the version of gcc.
+   Use like this:
+   #if __GNUC_PREREQ (2,8)
+   ... code requiring gcc 2.8 or later ...
+   #endif
+   Note: only works for GCC 2.0 and later, because __GNUC_MINOR__ was
+   added in 2.0.  */
+#if defined __GNUC__ && defined __GNUC_MINOR__
+# define __GNUC_PREREQ(maj, min) \
+	((__GNUC__ << 16) + __GNUC_MINOR__ >= ((maj) << 16) + (min))
+#else
+# define __GNUC_PREREQ(maj, min) 0
+#endif
+...
+```
