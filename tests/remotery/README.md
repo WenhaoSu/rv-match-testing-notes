@@ -1,28 +1,24 @@
 # remotery
 
-The source code of `remotery` can be found [here](git clone https://github.com/Celtoys/Remotery.git).
+The source code of `remotery` can be found [here](https://github.com/Celtoys/Remotery).
 
 ### Pre-request
 ```
-  None    
+git clone https://github.com/Celtoys/Remotery.git
+cd Remotery/
 ```
 
 ### Building with gcc
 ```
-    cd Remotery/ ; results[0]="$?" ;
-    kcc -profile x86_64-linux-gcc-glibc-gnuc
-    gcc -std=gnu11 lib/Remotery.c sample/sample.c -I lib -pthread -lm |& tee rv_build_1.txt ; results[1]="$?" ; postup 1
-    kcc-profile x86_64-linux-gcc-glibc
-    
+gcc -std=gnu11 lib/Remotery.c sample/sample.c -I lib -pthread -lm
 ````    
 
 
 ### Building with kcc
 ```
-    cd Remotery/ ; results[0]="$?" ;
-   `kcc -profile x86_64-linux-gcc-glibc-gnuc
-    kcc -std=gnu11 lib/Remotery.c sample/sample.c -I lib -pthread -lm |& tee rv_build_1.txt ; results[1]="$?" ; postup 1
-    kcc -profile x86_64-linux-gcc-glibc
+kcc -profile x86_64-linux-gcc-glibc-gnuc
+kcc -std=gnu11 lib/Remotery.c sample/sample.c -I lib -pthread -lm
+kcc -profile x86_64-linux-gcc-glibc
 ```
 
 ### Observation-Build
@@ -59,4 +55,6 @@ lib/Remotery.c:901:5: warning: Conversion from an integer to non-null pointer.
 ```
 ### Observation- Testing
 
-The gcc produced an executable file but it didn't print anything probably requiring input whereas the kcc falied to produce and executable.
+We can test the executable file (`a.out`) produced by `gcc` by typing `./a.out` and open the `index.html` in `Remotery/vis`. The result would be a frontend displaying the realtime CPU/GPU profile.
+
+However, `kcc` falied to produce the executable file.
