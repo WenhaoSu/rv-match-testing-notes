@@ -121,3 +121,24 @@ here `__GNUC_PREREQ` is a macro defined as following in `features.h`:
 #endif
 ...
 ```
+
+---
+Observation: I wrote a simple c program and tried to compile it using `kcc`:
+```c
+#include <math.h>
+
+int main (int argc, char ** argv) {
+    return 0;
+}
+```
+If we are using `x86_64-linux-gcc-glibc` profile, it would success, but if we are using `x86_64-linux-gcc-glibc-gnuc` profile, it would also give the following error which is exactly the same as remotery:
+```
+In file included from test2.c:1:0:
+/usr/include/math.h:542:5: error: #error "Non-typedef _FloatN but no _Generic."
+ #   error "Non-typedef _FloatN but no _Generic."
+     ^~~~~
+Translation failed (kcc_config dumped). To repeat, run this command in directory test:
+kcc -d test2.c -o test2
+```
+
+This may potentially imply that `x86_64-linux-gcc-glibc-gnuc` may not support `math.h`?
