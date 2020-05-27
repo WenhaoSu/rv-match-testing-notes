@@ -2,6 +2,10 @@
 
 The source code of `getty` can be found [here](https://github.com/StarchLinux/getty).
 
+### Summary
+
+The potential issue is that `kcc` does not recognize `#define __attribute_nonstring__`, 
+
 ### Pre-request
 ```
 git clone https://github.com/StarchLinux/getty.git

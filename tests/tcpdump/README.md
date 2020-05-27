@@ -2,6 +2,16 @@
 
 The source code of `tcpdump` can be found [here](https://github.com/the-tcpdump-group/tcpdump).
 
+
+### Summary
+
+The error message `kcc` gives is
+```
+Failed to execute native function pcap_getnonblock successfully. Reason: Variadic arguments in function pointer.
+Fatal error: exception (Invalid_argument "mismatched constructor at top of split configuration")
+```
+but there are no variadic function pointers related to `pcap_getnonblock` in the codebase.
+
 ### Pre-request
 ```
 git clone https://github.com/the-tcpdump-group/tcpdump.git
