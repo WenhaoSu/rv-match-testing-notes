@@ -142,3 +142,58 @@ Please report to bug-coreutils@gnu.org
 ### Note
 
 To run `./configure` and `make` really take time for both `gcc` and `kcc`, and it also takes time to run all test cases by typing `make check`. To test each cases individually could save time.
+
+### Followup
+
+Line 223 of `make-prime-list.c` is as following:
+```c
+...
+if (ferror (stdout) + fclose (stdout))      // Line 223
+    {
+      fprintf (stderr, "write error: %s\n", strerror (errno));
+      return EXIT_FAILURE;
+    }
+...
+```
+
+Hence we can try to write a simple programming only includes this part of logic:
+```c
+#include <stdio.h>
+
+int main () {
+    if (ferror (stdout) + fclose (stdout)) {
+      fprintf (stderr, "inside if\n");
+      return -1;
+    }
+    fprintf (stderr, "outside if\n");
+    return 0;
+}
+```
+We can build this file normally with both `gcc` and `kcc`. If we run the compiled file with `gcc`, it will print out `outside if`, which means that it does not enter the if block. However if we run the compiled file with `kcc`, it will then report those error:
+```
+Referring to an object outside of its lifetime:
+      > in main at test.c:4:5
+
+    Undefined behavior (UB-CEE4):
+        see C11 section 6.2.4:2 http://rvdoc.org/C11/6.2.4
+        see C11 section J.2:1 item 9 http://rvdoc.org/C11/J.2
+        see CERT-C section DCL21-C http://rvdoc.org/CERT-C/DCL21-C
+        see CERT-C section DCL30-C http://rvdoc.org/CERT-C/DCL30-C
+        see CERT-C section MEM30-C http://rvdoc.org/CERT-C/MEM30-C
+        see MISRA-C section 8.18:6 http://rvdoc.org/MISRA-C/8.18
+        see MISRA-C section 8.22:6 http://rvdoc.org/MISRA-C/8.22
+        see MISRA-C section 8.1:3 http://rvdoc.org/MISRA-C/8.1
+
+Dereferencing a null pointer:
+      > in ferror at test.c:4:5
+        in main at test.c:4:5
+
+    Undefined behavior (UB-CER3):
+        see C11 section 6.5.3.2:4 http://rvdoc.org/C11/6.5.3.2
+        see C11 section J.2:1 item 43 http://rvdoc.org/C11/J.2
+        see CERT-C section EXP34-C http://rvdoc.org/CERT-C/EXP34-C
+        see MISRA-C section 8.1:3 http://rvdoc.org/MISRA-C/8.1
+
+Execution failed (configuration dumped)
+```
+Which is exactly the error message we get when compiling `coreutils`. For both `x86_64-linux-gcc-glibc-gnuc` and `x86_64-linux-gcc-glibc` profiles, they give the same error.
