@@ -197,3 +197,14 @@ Dereferencing a null pointer:
 Execution failed (configuration dumped)
 ```
 Which is exactly the error message we get when compiling `coreutils`. For both `x86_64-linux-gcc-glibc-gnuc` and `x86_64-linux-gcc-glibc` profiles, they give the same error.
+
+---
+Observation: if we use `x86_64-linux-gcc-glibc-gnuc-reverse-eval-order` or `x86_64-linux-gcc-glibc-reverse-eval-order` to build the above simple program, then it would success. Since `x86_64-linux-gcc-glibc-gnuc-reverse-eval-order` will crash on the `./configure` stage, it seems that we need to use this profile: `x86_64-linux-gcc-glibc-reverse-eval-order` in order to build `coreutils`.
+
+However, although `kcc` succeeded in making `make-prime-list.c`, it still met an error in a later stage during make:
+```
+lib/fts.c[789:0-0] : syntax error
+Translation failed (kcc_config dumped). To repeat, run this command in directory coreutils:
+kcc -d -I. -I./lib -Ilib -I./lib -Isrc -I./src -g -MT lib/fts.o -MD -MP -MF lib/.deps/fts.Tpo -c -o lib/fts.o lib/fts.c
+Makefile:9782: recipe for target 'lib/fts.o' failed
+```
