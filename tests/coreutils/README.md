@@ -208,3 +208,80 @@ Translation failed (kcc_config dumped). To repeat, run this command in directory
 kcc -d -I. -I./lib -Ilib -I./lib -Isrc -I./src -g -MT lib/fts.o -MD -MP -MF lib/.deps/fts.Tpo -c -o lib/fts.o lib/fts.c
 Makefile:9782: recipe for target 'lib/fts.o' failed
 ```
+
+Line 789 of `fts.c` is as following:
+```c
+...
+static enum leaf_optimization
+leaf_optimization (FTSENT const *p, int dir_fd)
+{
+  switch (filesystem_type (p, dir_fd))
+    {
+    case 0:
+      /* Leaf optimization is unsafe if the file system type is unknown.  */
+      FALLTHROUGH;                                     // Line 789
+    case S_MAGIC_AFS:
+      /* Although AFS mount points are not counted in st_nlink, they
+         act like directories.  See <https://bugs.debian.org/143111>.  */
+      FALLTHROUGH;
+...
+}
+```
+where `FALLTHROUGH` is defined in `attribute.h`:
+```c
+...
+/* Do not warn if control flow falls through to the immediately
+   following 'case' or 'default' label.  */
+/* Applies to: Empty statement (;), inside a 'switch' statement.  */
+#define FALLTHROUGH _GL_ATTRIBUTE_FALLTHROUGH
+...
+```
+and we can also traceback to `_GL_ATTRIBUTE_FALLTHROUGH` in `config.h`:
+```c
+...
+/* FALLTHROUGH is special, because it always expands to something.  */
+#if 201710L < __STDC_VERSION__
+# define _GL_ATTRIBUTE_FALLTHROUGH [[__fallthrough__]]
+#elif _GL_HAS_ATTRIBUTE (fallthrough)
+# define _GL_ATTRIBUTE_FALLTHROUGH __attribute__ ((__fallthrough__))
+#else
+# define _GL_ATTRIBUTE_FALLTHROUGH ((void) 0)
+#endif
+...
+```
+We can replicate this error with the following simple example C program:
+```c
+#include <stdio.h>
+
+#ifdef __has_attribute
+# define _GL_HAS_ATTRIBUTE(attr) __has_attribute (__##attr##__)
+#else
+# define _GL_HAS_ATTRIBUTE(attr) _GL_ATTR_##attr
+#endif
+
+#if 201710L < __STDC_VERSION__
+# define _GL_ATTRIBUTE_FALLTHROUGH [[__fallthrough__]]
+#elif _GL_HAS_ATTRIBUTE (fallthrough)
+# define _GL_ATTRIBUTE_FALLTHROUGH __attribute__ ((__fallthrough__))
+#else
+# define _GL_ATTRIBUTE_FALLTHROUGH ((void) 0)
+#endif
+
+# define FALLTHROUGH _GL_ATTRIBUTE_FALLTHROUGH
+
+int main () {
+    switch (0) {
+    case 0:
+      FALLTHROUGH;
+    default:
+      return 0;
+    }
+    return 0;
+}
+```
+While `gcc` succeeded in make and run this program, `kcc` with `x86_64-linux-gcc-glibc-reverse-eval-order` profile failed and reported the following error:
+```
+test.c[23:0-0] : syntax error
+Translation failed (kcc_config dumped). To repeat, run this command in directory test:
+kcc -d test.c -o ktest
+```
