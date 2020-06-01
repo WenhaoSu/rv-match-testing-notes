@@ -285,3 +285,4 @@ test.c[23:0-0] : syntax error
 Translation failed (kcc_config dumped). To repeat, run this command in directory test:
 kcc -d test.c -o ktest
 ```
+All other profiles report the same error for this test program.
