@@ -253,35 +253,21 @@ We can replicate this error with the following simple example C program:
 ```c
 #include <stdio.h>
 
-#ifdef __has_attribute
-# define _GL_HAS_ATTRIBUTE(attr) __has_attribute (__##attr##__)
-#else
-# define _GL_HAS_ATTRIBUTE(attr) _GL_ATTR_##attr
-#endif
-
-#if 201710L < __STDC_VERSION__
-# define _GL_ATTRIBUTE_FALLTHROUGH [[__fallthrough__]]
-#elif _GL_HAS_ATTRIBUTE (fallthrough)
 # define _GL_ATTRIBUTE_FALLTHROUGH __attribute__ ((__fallthrough__))
-#else
-# define _GL_ATTRIBUTE_FALLTHROUGH ((void) 0)
-#endif
-
-# define FALLTHROUGH _GL_ATTRIBUTE_FALLTHROUGH
 
 int main () {
     switch (0) {
     case 0:
-      FALLTHROUGH;
+      _GL_ATTRIBUTE_FALLTHROUGH;
     default:
       return 0;
     }
     return 0;
-}
+}s
 ```
 While `gcc` succeeded in make and run this program, `kcc` with `x86_64-linux-gcc-glibc-reverse-eval-order` profile failed and reported the following error:
 ```
-test.c[23:0-0] : syntax error
+test.c[8:0-0] : syntax error
 Translation failed (kcc_config dumped). To repeat, run this command in directory test:
 kcc -d test.c -o ktest
 ```
