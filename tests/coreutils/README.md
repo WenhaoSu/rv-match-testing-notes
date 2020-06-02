@@ -263,7 +263,7 @@ int main () {
       return 0;
     }
     return 0;
-}s
+}
 ```
 While `gcc` succeeded in make and run this program, `kcc` with `x86_64-linux-gcc-glibc-reverse-eval-order` profile failed and reported the following error:
 ```
@@ -272,3 +272,88 @@ Translation failed (kcc_config dumped). To repeat, run this command in directory
 kcc -d test.c -o ktest
 ```
 All other profiles report the same error for this test program.
+
+### Previous Version
+
+Coreutils-8.24:
+`gcc` successed in running `./configure`, `make` and `make check`. However, `kcc` with profile `x86_64-linux-gcc-glibc` and `x86_64-linux-gcc-glibc-reverse-eval-order` failed in the `make` stage with the following error message:
+```
+lib/isnan.c:147:3: error: Division by 0.
+
+    Undefined behavior (UB-CEMX1):
+        see C11 section 6.5.5:5 http://rvdoc.org/C11/6.5.5
+        see C11 section J.2:1 item 45 http://rvdoc.org/C11/J.2
+        see CERT-C section INT33-C http://rvdoc.org/CERT-C/INT33-C
+        see MISRA-C section 8.1:3 http://rvdoc.org/MISRA-C/8.1
+
+lib/isnan.c:147:3: error: Non-constant static initializer.
+
+    Constraint violation (CV-TSE3):
+        see C11 section 6.7.9:4 http://rvdoc.org/C11/6.7.9
+        see CERT-C section MSC40-C http://rvdoc.org/CERT-C/MSC40-C
+        see MISRA-C section 8.1:1 http://rvdoc.org/MISRA-C/8.1
+
+Translation failed (kcc_config dumped). To repeat, run this command in directory coreutils-8.24-kcc:
+kcc -d -I. -I./lib -Ilib -I./lib -Isrc -I./src -g -MT lib/isnanf.o -MD -MP -MF lib/.deps/isnanf.Tpo -c -o lib/isnanf.o lib/isnanf.c
+```
+and here is the code `kcc` is complaining:
+```c
+...
+#  if defined __SUNPRO_C || defined __ICC || defined _MSC_VER \
+      || defined __DECC || defined __TINYC__ \
+      || (defined __sgi && !defined __GNUC__)
+  /* The Sun C 5.0, Intel ICC 10.0, Microsoft Visual C/C++ 9.0, Compaq (ex-DEC)
+     6.4, and TinyCC compilers don't recognize the initializers as constant
+     expressions.  The Compaq compiler also fails when constant-folding
+     0.0 / 0.0 even when constant-folding is not required.  The Microsoft
+     Visual C/C++ compiler also fails when constant-folding 1.0 / 0.0 even
+     when constant-folding is not required. The SGI MIPSpro C compiler
+     complains about "floating-point operation result is out of range".  */
+  static DOUBLE zero = L_(0.0);
+  memory_double nan;
+  DOUBLE plus_inf = L_(1.0) / zero;
+  DOUBLE minus_inf = -L_(1.0) / zero;
+  nan.value = zero / zero;
+#  else
+  static memory_double nan = { L_(0.0) / L_(0.0) };       // Line 147
+  static DOUBLE plus_inf = L_(1.0) / L_(0.0);
+  static DOUBLE minus_inf = -L_(1.0) / L_(0.0);
+#  endif
+...
+```
+We can replicate this error with the following simple example C program:
+```c
+#include <stdio.h>
+
+# define L_(literal) literal
+# define DOUBLE double
+#define NWORDS \
+  ((sizeof (DOUBLE) + sizeof (unsigned int) - 1) / sizeof (unsigned int))
+
+typedef union { DOUBLE value; unsigned int word[NWORDS]; } memory_double;
+
+int main () {
+    static memory_double nan = { L_(0.0) / L_(0.0) };
+    return 0;
+}
+```
+While `gcc` succeeded in make and run this program, `kcc` with all profiles failed and reported the following error:
+```
+test.c:11:5: error: Division by 0.
+
+    Undefined behavior (UB-CEMX1):
+        see C11 section 6.5.5:5 http://rvdoc.org/C11/6.5.5
+        see C11 section J.2:1 item 45 http://rvdoc.org/C11/J.2
+        see CERT-C section INT33-C http://rvdoc.org/CERT-C/INT33-C
+        see MISRA-C section 8.1:3 http://rvdoc.org/MISRA-C/8.1
+
+test.c:11:5: error: Non-constant static initializer.
+
+    Constraint violation (CV-TSE3):
+        see C11 section 6.7.9:4 http://rvdoc.org/C11/6.7.9
+        see CERT-C section MSC40-C http://rvdoc.org/CERT-C/MSC40-C
+        see MISRA-C section 8.1:1 http://rvdoc.org/MISRA-C/8.1
+
+Translation failed (kcc_config dumped). To repeat, run this command in directory test:
+kcc -d test.c -o ktest
+```
