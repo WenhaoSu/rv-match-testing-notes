@@ -275,6 +275,12 @@ All other profiles report the same error for this test program.
 
 ### Previous Version
 
+#### Coreutils-5.96:
+`gcc` failed to run `make`, skip this version.
+
+#### Coreutils-5.97:
+`gcc` failed to run `make`, skip this version.
+
 #### Coreutils-7.1:
 `gcc` failed to run `make`, skip this version.
 
