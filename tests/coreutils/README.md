@@ -361,3 +361,70 @@ test.c:9:5: error: Non-constant static initializer.
 Translation failed (kcc_config dumped). To repeat, run this command in directory test:
 kcc -d test.c -o ktest
 ```
+We can try to eliminate this error by change the code in `lib/isnan.c` to be:
+```c
+...
+#  if defined __SUNPRO_C || defined __ICC || defined _MSC_VER \
+      || defined __DECC || defined __TINYC__ \
+      || (defined __sgi && !defined __GNUC__)
+  /* The Sun C 5.0, Intel ICC 10.0, Microsoft Visual C/C++ 9.0, Compaq (ex-DEC)
+     6.4, and TinyCC compilers don't recognize the initializers as constant
+     expressions.  The Compaq compiler also fails when constant-folding
+     0.0 / 0.0 even when constant-folding is not required.  The Microsoft
+     Visual C/C++ compiler also fails when constant-folding 1.0 / 0.0 even
+     when constant-folding is not required. The SGI MIPSpro C compiler
+     complains about "floating-point operation result is out of range".  */
+  static DOUBLE zero = L_(0.0);
+  memory_double nan;
+  DOUBLE plus_inf = 1.79769e+308;
+  DOUBLE minus_inf = -1.79769e+308;
+  nan.value = 1.79769e+308;
+#  else
+  static memory_double nan = { 1.79769e+308 };
+  static DOUBLE plus_inf = 1.79769e+308;
+  static DOUBLE minus_inf = -1.79769e+308;
+#  endif
+...
+```
+After making this change, `gcc` is still able to build and run `make check`, but is passing fewer cases as expected:
+```
+============================================================================
+Testsuite summary for GNU coreutils 8.24
+============================================================================
+# TOTAL: 579
+# PASS:  367
+# SKIP:  159
+# XFAIL: 0
+# FAIL:  52
+# XPASS: 0
+# ERROR: 1
+============================================================================
+See ./tests/test-suite.log
+Please report to bug-coreutils@gnu.org
+============================================================================
+```
+However, `kcc` reported a different error:
+```
+lib/mountlist.c[526:0-26] : syntax error
+Translation failed (kcc_config dumped). To repeat, run this command in directory coreutils-8.24-kcc:
+kcc -d -I. -I./lib -Ilib -I./lib -Isrc -I./src -g -MT lib/mountlist.o -MD -MP -MF lib/.deps/mountlist.Tpo -c -o lib/mountlist.o lib/mountlist.c
+Makefile:8827: recipe for target 'lib/mountlist.o' failed
+```
+Here is the code where the error appears in `lib/mountlist.c`:
+```c
+...
+            me = xmalloc (sizeof *me);
+
+            me->me_devname = xstrdup (dash + source_s);
+            me->me_mountdir = xstrdup (line + target_s);
+            me->me_type = xstrdup (dash + type_s);
+            me->me_type_malloced = 1;
+            me->me_dev = makedev (devmaj, devmin);                       // Line 526
+            /* we pass "false" for the "Bind" option as that's only
+               significant when the Fs_type is "none" which will not be
+               the case when parsing "/proc/self/mountinfo", and only
+               applies for static /etc/mtab files.  */
+            me->me_dummy = ME_DUMMY (me->me_devname, me->me_type, false);
+            me->me_remote = ME_REMOTE (me->me_devname, me->me_type);
+...
+```
