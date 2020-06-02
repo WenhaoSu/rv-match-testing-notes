@@ -275,6 +275,12 @@ All other profiles report the same error for this test program.
 
 ### Previous Version
 
+#### Coreutils-7.1:
+`gcc` failed to run `make`, skip this version.
+
+#### Coreutils-8.1:
+`gcc` failed to run `make`, skip this version.
+
 #### Coreutils-8.24:
 `gcc` successed in running `./configure`, `make` and `make check`. However, `kcc` with profile `x86_64-linux-gcc-glibc` and `x86_64-linux-gcc-glibc-reverse-eval-order` failed in the `make` stage with the following error message:
 ```
@@ -325,21 +331,19 @@ We can replicate this error with the following simple example C program:
 ```c
 #include <stdio.h>
 
-# define L_(literal) literal
-# define DOUBLE double
 #define NWORDS \
-  ((sizeof (DOUBLE) + sizeof (unsigned int) - 1) / sizeof (unsigned int))
+  ((sizeof (double) + sizeof (unsigned int) - 1) / sizeof (unsigned int))
 
-typedef union { DOUBLE value; unsigned int word[NWORDS]; } memory_double;
+typedef union { double value; unsigned int word[NWORDS]; } memory_double;
 
 int main () {
-    static memory_double nan = { L_(0.0) / L_(0.0) };
+    static memory_double nan = { 0.0 / 0.0 };
     return 0;
 }
 ```
 While `gcc` succeeded in make and run this program, `kcc` with all profiles failed and reported the following error:
 ```
-test.c:11:5: error: Division by 0.
+test.c:9:5: error: Division by 0.
 
     Undefined behavior (UB-CEMX1):
         see C11 section 6.5.5:5 http://rvdoc.org/C11/6.5.5
@@ -347,7 +351,7 @@ test.c:11:5: error: Division by 0.
         see CERT-C section INT33-C http://rvdoc.org/CERT-C/INT33-C
         see MISRA-C section 8.1:3 http://rvdoc.org/MISRA-C/8.1
 
-test.c:11:5: error: Non-constant static initializer.
+test.c:9:5: error: Non-constant static initializer.
 
     Constraint violation (CV-TSE3):
         see C11 section 6.7.9:4 http://rvdoc.org/C11/6.7.9
