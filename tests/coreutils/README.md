@@ -275,7 +275,7 @@ All other profiles report the same error for this test program.
 
 ### Previous Version
 
-Coreutils-8.24:
+#### Coreutils-8.24:
 `gcc` successed in running `./configure`, `make` and `make check`. However, `kcc` with profile `x86_64-linux-gcc-glibc` and `x86_64-linux-gcc-glibc-reverse-eval-order` failed in the `make` stage with the following error message:
 ```
 lib/isnan.c:147:3: error: Division by 0.
