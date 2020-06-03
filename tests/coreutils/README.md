@@ -584,3 +584,37 @@ Conversion from an integer to non-null pointer:
 
 Fatal error: exception (Invalid_argument "mismatched constructor at top of split configuration")
 ```
+
+##### Building date
+
+To run `make date` succeeded for `kcc` but with a lot of `Multiple external definitions` error. However, when we run `./date` for `kcc` generated executable file, it reported
+```
+Fatal error: exception (Invalid_argument
+  "convert_byte_to_native: encodedValue(opaque(#token(\"1\", \"Int\"), ut(`.Set`(.KList), structType(tag(`Identifier`(#token(\"\\\"_IO_FILE\\\"\", \"String\")), #token(\"\\\"/opt/rv-match/c-semantics/profiles/x86_64-linux-gcc-glibc/src/kcc_types.c55777c10-8fd5-11ea-9420-aad0e96ca077\\\"\", \"String\"), `global_C-TYPING-SYNTAX`(.KList))))), #token(\"0\", \"Int\"), #token(\"8\", \"Int\"))")
+```
+while run `./date --help` would report
+```
+Usage: ./date [OPTION]... [+FORMAT]
+  or:  ./date [-u|--utc|--universal] [MMDDhhmm[[CC]YY][.ss]]
+Fatal error: exception (Invalid_argument
+  "convert_byte_to_native: encodedValue(opaque(#token(\"1\", \"Int\"), ut(`.Set`(.KList), structType(tag(`Identifier`(#token(\"\\\"_IO_FILE\\\"\", \"String\")), #token(\"\\\"/opt/rv-match/c-semantics/profiles/x86_64-linux-gcc-glibc/src/kcc_types.c55777c10-8fd5-11ea-9420-aad0e96ca077\\\"\", \"String\"), `global_C-TYPING-SYNTAX`(.KList))))), #token(\"0\", \"Int\"), #token(\"8\", \"Int\"))")
+```
+
+##### Building whoami
+
+To run `make whoami` succeeded for `kcc` but with a lot of `Multiple external definitions` error. However, when we run `./whoami` for `kcc` generated executable file, it first printed the result correctly, then it reported
+```
+Fatal error: exception (Invalid_argument
+  "convert_byte_to_native: encodedValue(opaque(#token(\"1\", \"Int\"), ut(`.Set`(.KList), structType(tag(`Identifier`(#token(\"\\\"_IO_FILE\\\"\", \"String\")), #token(\"\\\"/opt/rv-match/c-semantics/profiles/x86_64-linux-gcc-glibc/src/kcc_types.c55777c10-8fd5-11ea-9420-aad0e96ca077\\\"\", \"String\"), `global_C-TYPING-SYNTAX`(.KList))))), #token(\"0\", \"Int\"), #token(\"8\", \"Int\"))")
+```
+running `./whoami --help` would report the same error as previous `--help` commands.
+
+##### Building echo
+
+To run `make echo` succeeded for `kcc` but with a lot of `Multiple external definitions` error. However, when we run `./echo test` for `kcc` generated executable file, it reported
+```
+Fatal error: exception (Invalid_argument
+  "convert_byte_to_native: encodedValue(opaque(#token(\"1\", \"Int\"), ut(`.Set`(.KList), structType(tag(`Identifier`(#token(\"\\\"_IO_FILE\\\"\", \"String\")), #token(\"\\\"/opt/rv-match/c-semantics/profiles/x86_64-linux-gcc-glibc/src/kcc_types.c55777c10-8fd5-11ea-9420-aad0e96ca077\\\"\", \"String\"), `global_C-TYPING-SYNTAX`(.KList))))), #token(\"0\", \"Int\"), #token(\"8\", \"Int\"))")
+```
+running `./echo --help` would report the same error as previous `--help` commands.
+
