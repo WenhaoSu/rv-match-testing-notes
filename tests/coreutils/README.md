@@ -482,21 +482,24 @@ timespec.h:81:1: error: Multiple external definitions for timespectod.
 ```
 but it would also succeeded in generating the corresponding execution file.
 
-Also, for all commands, runing `--help` would first print out usage normally, then `kcc` would report the following erroe message:
+Also, for all commands, runing `--help` would first print out usage normally, then `kcc` would report the following `convert_byte_to_native` error message:
 ```
 Fatal error: exception (Invalid_argument
   "convert_byte_to_native: encodedValue(opaque(#token(\"1\", \"Int\"), ut(`.Set`(.KList), structType(tag(`Identifier`(#token(\"\\\"_IO_FILE\\\"\", \"String\")), #token(\"\\\"/opt/rv-match/c-semantics/profiles/x86_64-linux-gcc-glibc/src/kcc_types.c55777c10-8fd5-11ea-9420-aad0e96ca077\\\"\", \"String\"), `global_C-TYPING-SYNTAX`(.KList))))), #token(\"0\", \"Int\"), #token(\"8\", \"Int\"))")
 ```
 
 #### Test Summary
-* Commands that are able to compile, could execute and print the result, but failed when ending the program: (Italics means also reporting undefined behaviors)
-  * *cat*, pwd, whoami
-* Commands that are able to compile, but failed to execute and ended the program:
-  * date, echo
+Below is a summarization of projects built. Here italics means also reporting undefined behaviors:
+* Commands that are able to compile, could execute and print the result, with almost no error except `convert_byte_to_native` error:
+  * nice
+* Commands that are able to compile, could execute and print the result, but reported `convert_byte_to_native` error message when ending the program:
+  * **cat**, false, pwd, true, whoami, yes
+* Commands that are able to compile, but failed to execute and reported `convert_byte_to_native` error message:
+  * date, echo, **wc**
 * Commands that are able to compile, but reported Undefined Behavior when executing:
   * ls
 
-Below are detailed report for above commands:
+Below are detailed report for several commands:
 
 ##### Building cat
 
@@ -511,11 +514,8 @@ Modulus operator with a pointer value as an argument:
         see C11 section J.3.7:1 item 1 http://rvdoc.org/C11/J.3.7
         see MISRA-C section 8.11:4 http://rvdoc.org/MISRA-C/8.11
 ```
-then it succeeded in printing out the contents in the file `../AUTHORS`. However after finish printing the contents and is about to end the program, kcc reports
-```
-Fatal error: exception (Invalid_argument
-  "convert_byte_to_native: encodedValue(opaque(#token(\"1\", \"Int\"), ut(`.Set`(.KList), structType(tag(`Identifier`(#token(\"\\\"_IO_FILE\\\"\", \"String\")), #token(\"\\\"/opt/rv-match/c-semantics/profiles/x86_64-linux-gcc-glibc/src/kcc_types.c55777c10-8fd5-11ea-9420-aad0e96ca077\\\"\", \"String\"), `global_C-TYPING-SYNTAX`(.KList))))), #token(\"0\", \"Int\"), #token(\"8\", \"Int\"))")
-```
+then it succeeded in printing out the contents in the file `../AUTHORS`. However after finish printing the contents and is about to end the program, kcc reports `convert_byte_to_native` error message.
+
 The intuition here is that `kcc` succeeded in compiling and running `cat`, but it may report a fatal error when exiting the program.
 
 ##### Building ls
@@ -565,28 +565,37 @@ Conversion from an integer to non-null pointer:
 Fatal error: exception (Invalid_argument "mismatched constructor at top of split configuration")
 ```
 
-##### Building date
+##### Building wc
 
-When runing `./date` for `kcc` generated executable file, it reported
+When runing `./wc touch.c` for `kcc` generated executable file, it reported
 ```
+Type of lvalue (const unsigned int) not compatible with the effective type of the object being accessed (const unsigned int []):
+      > in is_basic at ../lib/mbchar.h:310:3
+        in wc at wc.c:325:15
+        in wc_file at wc.c:515:10
+        in main at wc.c:776:9
+
+    Undefined behavior (UB-EIO10):
+        see C11 section 6.5:7 http://rvdoc.org/C11/6.5
+        see C11 section J.2:1 item 37 http://rvdoc.org/C11/J.2
+        see CERT-C section EXP39-C http://rvdoc.org/CERT-C/EXP39-C
+        see MISRA-C section 8.1:3 http://rvdoc.org/MISRA-C/8.1
+
+
 Fatal error: exception (Invalid_argument
   "convert_byte_to_native: encodedValue(opaque(#token(\"1\", \"Int\"), ut(`.Set`(.KList), structType(tag(`Identifier`(#token(\"\\\"_IO_FILE\\\"\", \"String\")), #token(\"\\\"/opt/rv-match/c-semantics/profiles/x86_64-linux-gcc-glibc/src/kcc_types.c55777c10-8fd5-11ea-9420-aad0e96ca077\\\"\", \"String\"), `global_C-TYPING-SYNTAX`(.KList))))), #token(\"0\", \"Int\"), #token(\"8\", \"Int\"))")
 ```
 
-##### Building pwd
+##### Building nice
 
-When runing `./pwd` for `kcc` generated executable file, it reported
+When runing `./nice` followed directly by other commands, `kcc` compiled version succeeded and didn't report any error.
+Run `./nice -n 19 whoami` would give:
 ```
-Fatal error: exception (Invalid_argument
-  "convert_byte_to_native: encodedValue(opaque(#token(\"1\", \"Int\"), ut(`.Set`(.KList), structType(tag(`Identifier`(#token(\"\\\"_IO_FILE\\\"\", \"String\")), #token(\"\\\"/opt/rv-match/c-semantics/profiles/x86_64-linux-gcc-glibc/src/kcc_types.c55777c10-8fd5-11ea-9420-aad0e96ca077\\\"\", \"String\"), `global_C-TYPING-SYNTAX`(.KList))))), #token(\"0\", \"Int\"), #token(\"8\", \"Int\"))")
+./nice: invalid adjustment ‘19’
 ```
+while `gcc` compiled version would not have this error.
 
-##### Building echo
+##### Building true & false
 
-Same as building `date`.
-
-##### Building whoami
-
-Same as building `pwd`.
-
-
+When no command line arguments are provided, it would not report any error. However, when run `./true ls`, it would report `convert_byte_to_native` error message.
+The same holds for `./false`.
