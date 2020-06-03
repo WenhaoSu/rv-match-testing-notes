@@ -466,6 +466,8 @@ It succeeded for coreutils-8.19 but may not work in versions after coreutils-8.2
 #### Coreutils-8.19
 When running `make` in `./lib`, `kcc` would also encounter the problem of division by 0. By using the solution in the last section, `kcc` succeeded in running `make` in `./lib`!
 
+##### Building cat
+
 When running `make cat` in `./src`, kcc reported a great amount of the following errors:
 ```
 ...
@@ -535,6 +537,8 @@ Fatal error: exception (Invalid_argument
   "convert_byte_to_native: encodedValue(opaque(#token(\"1\", \"Int\"), ut(`.Set`(.KList), structType(tag(`Identifier`(#token(\"\\\"_IO_FILE\\\"\", \"String\")), #token(\"\\\"/opt/rv-match/c-semantics/profiles/x86_64-linux-gcc-glibc/src/kcc_types.c55777c10-8fd5-11ea-9420-aad0e96ca077\\\"\", \"String\"), `global_C-TYPING-SYNTAX`(.KList))))), #token(\"0\", \"Int\"), #token(\"8\", \"Int\"))")
 ```
 The intuition here is that `kcc` succeeded in compiling and running `cat`, but it may report a fatal error when exiting the program.
+
+##### Building ls
 
 To run `make ls` also succeeded for `kcc` but with a lot of `Multiple external definitions` error. However, when we run `./ls` for `kcc` generated executable file, it reported
 ```
