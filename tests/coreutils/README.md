@@ -35,62 +35,6 @@ make check
 When running `make` with `kcc`, we get the following error message when compiling `src/make-prime-list`:
 
 ```
-make src/make-prime-list
-make[1]: Entering directory '/mnt/c/Users/suwen/Desktop/intern/coreutils-test/kcc/coreutils'
-  CC       src/make-prime-list.o
-In file included from src/make-prime-list.c:22:0:
-./lib/limits.h:41:3: warning: #include_next is a GCC extension
- # include_next <limits.h>
-   ^~~~~~~~~~~~
-In file included from src/make-prime-list.c:24:0:
-./lib/inttypes.h:41:4: warning: #include_next is a GCC extension
- #  include_next <inttypes.h>
-    ^~~~~~~~~~~~
-In file included from src/make-prime-list.c:25:0:
-./lib/stdio.h:43:2: warning: #include_next is a GCC extension
- #include_next <stdio.h>
-  ^~~~~~~~~~~~
-In file included from ./lib/stdio.h:58:0,
-                 from src/make-prime-list.c:25:
-./lib/sys/types.h:39:2: warning: #include_next is a GCC extension
- #include_next <sys/types.h>
-  ^~~~~~~~~~~~
-In file included from src/make-prime-list.c:26:0:
-./lib/string.h:41:2: warning: #include_next is a GCC extension
- #include_next <string.h>
-  ^~~~~~~~~~~~
-In file included from src/make-prime-list.c:27:0:
-./lib/stdlib.h:36:2: warning: #include_next is a GCC extension
- #include_next <stdlib.h>
-  ^~~~~~~~~~~~
-In file included from src/make-prime-list.c:22:0:
-./lib/limits.h:41:3: warning: #include_next is a GCC extension
- # include_next <limits.h>
-   ^~~~~~~~~~~~
-In file included from src/make-prime-list.c:24:0:
-./lib/inttypes.h:41:4: warning: #include_next is a GCC extension
- #  include_next <inttypes.h>
-    ^~~~~~~~~~~~
-In file included from src/make-prime-list.c:25:0:
-./lib/stdio.h:43:2: warning: #include_next is a GCC extension
- #include_next <stdio.h>
-  ^~~~~~~~~~~~
-In file included from ./lib/stdio.h:58:0,
-                 from src/make-prime-list.c:25:
-./lib/sys/types.h:39:2: warning: #include_next is a GCC extension
- #include_next <sys/types.h>
-  ^~~~~~~~~~~~
-In file included from src/make-prime-list.c:26:0:
-./lib/string.h:41:2: warning: #include_next is a GCC extension
- #include_next <string.h>
-  ^~~~~~~~~~~~
-In file included from src/make-prime-list.c:27:0:
-./lib/stdlib.h:36:2: warning: #include_next is a GCC extension
- #include_next <stdlib.h>
-  ^~~~~~~~~~~~
-src/make-prime-list.c:43:18: warning: ISO C does not support '__int128' types [-Wpedantic]
- typedef unsigned __int128 wide_uint;
-                  ^~~~~~~~
   CCLD     src/make-prime-list
 make[1]: Leaving directory '/mnt/c/Users/suwen/Desktop/intern/coreutils-test/kcc/coreutils'
   GEN      src/primes.h
@@ -121,23 +65,7 @@ Execution failed (configuration dumped)
 Makefile:15417: recipe for target 'src/primes.h' failed
 make: *** [src/primes.h] Error 139
 ```
-However for `gcc`, it succeeded in build and is able to pass most of test cases:
-```
-============================================================================
-Testsuite summary for GNU coreutils 8.32.19-ae79d4
-============================================================================
-# TOTAL: 622
-# PASS:  404
-# SKIP:  170
-# XFAIL: 0
-# FAIL:  44
-# XPASS: 0
-# ERROR: 4
-============================================================================
-See ./tests/test-suite.log
-Please report to bug-coreutils@gnu.org
-============================================================================
-```
+However for `gcc`, it succeeded in build and is able to pass most of test cases.
 
 ### Note
 
@@ -275,17 +203,8 @@ All other profiles report the same error for this test program.
 
 ### Previous Version
 
-#### Coreutils-5.96:
-`gcc` failed to run `make`, skip this version.
-
-#### Coreutils-5.97:
-`gcc` failed to run `make`, skip this version.
-
-#### Coreutils-7.1:
-`gcc` failed to run `make`, skip this version.
-
-#### Coreutils-8.1:
-`gcc` failed to run `make`, skip this version.
+#### Coreutils-5.96, 5.97, 7.1, 8.1:
+`gcc` failed to run `make`, skip those versions.
 
 #### Coreutils-8.24:
 `gcc` successed in running `./configure`, `make` and `make check`. However, `kcc` with profile `x86_64-linux-gcc-glibc` and `x86_64-linux-gcc-glibc-reverse-eval-order` failed in the `make` stage with the following error message:
@@ -392,24 +311,7 @@ We can try to eliminate this error by change the code in `lib/isnan.c` to be:
 #  endif
 ...
 ```
-After making this change, `gcc` is still able to build and run `make check`, but is passing fewer cases as expected:
-```
-============================================================================
-Testsuite summary for GNU coreutils 8.24
-============================================================================
-# TOTAL: 579
-# PASS:  367
-# SKIP:  159
-# XFAIL: 0
-# FAIL:  52
-# XPASS: 0
-# ERROR: 1
-============================================================================
-See ./tests/test-suite.log
-Please report to bug-coreutils@gnu.org
-============================================================================
-```
-However, `kcc` reported a different error:
+After making this change, `gcc` is still able to build and run `make check`, but is passing fewer cases as expected. However, `kcc` reported a different error:
 ```
 lib/mountlist.c[526:0-26] : syntax error
 Translation failed (kcc_config dumped). To repeat, run this command in directory coreutils-8.24-kcc:
@@ -487,7 +389,7 @@ Also, for all commands, runing `--help` would first print out usage normally, th
 Fatal error: exception (Invalid_argument
   "convert_byte_to_native: encodedValue(opaque(#token(\"1\", \"Int\"), ut(`.Set`(.KList), structType(tag(`Identifier`(#token(\"\\\"_IO_FILE\\\"\", \"String\")), #token(\"\\\"/opt/rv-match/c-semantics/profiles/x86_64-linux-gcc-glibc/src/kcc_types.c55777c10-8fd5-11ea-9420-aad0e96ca077\\\"\", \"String\"), `global_C-TYPING-SYNTAX`(.KList))))), #token(\"0\", \"Int\"), #token(\"8\", \"Int\"))")
 ```
-
+---
 #### Test Summary
 Below is a summarization of projects built. Here italics means also reporting undefined behaviors:
 * Commands that are able to compile, could execute and print the result, with almost no error except `convert_byte_to_native` error:
