@@ -434,3 +434,33 @@ Here is the code where the error appears in `lib/mountlist.c`:
             me->me_remote = ME_REMOTE (me->me_devname, me->me_type);
 ...
 ```
+Here `makedev` is a function defined in `sysmacros.h`, which is part of the GNU C Library.
+```c
+...
+#ifdef __SYSMACROS_DEPRECATED_INCLUSION
+# define major(dev) __SYSMACROS_DM (major) gnu_dev_major (dev)
+# define minor(dev) __SYSMACROS_DM (minor) gnu_dev_minor (dev)
+# define makedev(maj, min) __SYSMACROS_DM (makedev) gnu_dev_makedev (maj, min)
+#else
+# define major(dev) gnu_dev_major (dev)
+# define minor(dev) gnu_dev_minor (dev)
+# define makedev(maj, min) gnu_dev_makedev (maj, min)
+#endif
+...
+```
+while `devmaj` and `devmin` are supposed to be two `unsigned int` variables.
+
+---
+Observation: we can build coreutil functions seperately by using the following command:
+```
+./configure
+cd ./lib
+make
+cd ../src
+make version.h
+make cat
+make ls
+```
+It succeeded for coreutils-8.19 but may not work in versions after coreutils-8.23. So we choose to run tests on coreutils-8.19 for next stage.
+
+#### Coreutils-8.19
