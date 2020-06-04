@@ -397,7 +397,7 @@ Below is a summarization of projects built. Here italics means also reporting un
 * Commands that are able to compile, could execute and print the result, but reported `convert_byte_to_native` error message when ending the program:
   * **cat**, false, pwd, true, whoami, yes
 * Commands that are able to compile, but failed to execute and reported `convert_byte_to_native` error message:
-  * date, echo, **wc**
+  * date, echo, **wc**, uname
 * Commands that are able to compile, but reported Undefined Behavior when executing:
   * ls
 
