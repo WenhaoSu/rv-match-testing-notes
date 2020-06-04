@@ -501,3 +501,22 @@ while `gcc` compiled version would not have this error.
 
 When no command line arguments are provided, it would not report any error. However, when run `./true ls`, it would report `convert_byte_to_native` error message.
 The same holds for `./false`.
+
+##### Building true & false
+ When running './sort' for 'kcc' generated executable file it reported
+ ```
+ Conversion to signed integer outside the range that can be represented:
+      > in inittables at sort.c:1251:7
+        in main at sort.c:4183:3
+
+    Implementation defined behavior (IMPL-CCV2):
+        see C11 section 6.3.1.3:3 http://rvdoc.org/C11/6.3.1.3
+        see C11 section J.3.5:1 item 4 http://rvdoc.org/C11/J.3.5
+        see CERT-C section INT31-C http://rvdoc.org/CERT-C/INT31-C
+
+Fatal error: exception (Invalid_argument
+  "convert_byte_to_native: encodedValue(opaque(#token(\"0\", \"Int\"), ut(`.Set`(.KList), structType(tag(`Identifier`(#token(\"\\\"_IO_FILE\\\"\", \"String\")), #token(\"\\\"kcc_types.c15e7b5db-8efa-11ea-9073-acb87a5092db\\\"\", \"String\"), `global_C-TYPING-SYNTAX`(.KList))))), #token(\"0\", \"Int\"), #token(\"8\", \"Int\"))")
+
+ ```
+
+
