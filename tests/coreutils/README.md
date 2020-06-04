@@ -397,7 +397,7 @@ Below is a summarization of projects built. Here italics means also reporting un
 * Commands that are able to compile, could execute and print the result, but reported `convert_byte_to_native` error message when ending the program:
   * **cat**, false, pwd, true, whoami, yes
 * Commands that are able to compile, but failed to execute and reported `convert_byte_to_native` error message:
-  * date, echo, **wc**, uname
+  * date, echo, **wc**, uname, **sort**
 * Commands that are able to compile, but reported Undefined Behavior when executing:
   * ls
 
@@ -502,7 +502,7 @@ while `gcc` compiled version would not have this error.
 When no command line arguments are provided, it would not report any error. However, when run `./true ls`, it would report `convert_byte_to_native` error message.
 The same holds for `./false`.
 
-##### Building true & false
+##### Building sort
  When running './sort' for 'kcc' generated executable file it reported
  ```
  Conversion to signed integer outside the range that can be represented:
