@@ -562,3 +562,31 @@ Conversion to signed integer outside the range that can be represented:
 
 Reached this point
 ```
+---
+Observation on `convert_byte_to_native` error:
+As far as I've discovered, there are mainly two sources that can cause this error. Take `true.c` as example, if we change main function to the following (use funtion `fclose` on `stderr`):
+```c
+int main (int argc, char **argv) {
+  printf ("here\n");
+  fclose (stderr);
+  printf ("there\n");
+}
+```
+or (use funtion `fputs` on `stdout`):
+```c
+int main (int argc, char **argv) {
+  printf ("here\n");
+  fputs (VERSION_OPTION_DESCRIPTION, stdout);
+  printf ("there\n");
+}
+```
+
+and then type `make true; ./true --help`, they would both print
+```
+here
+Fatal error: exception (Invalid_argument
+  "convert_byte_to_native: encodedValue(opaque(#token(\"2\", \"Int\"), ut(`.Set`(.KList), structType(tag(`Identifier`(#token(\"\\\"_IO_FILE\\\"\", \"String\")), #token(\"\\\"/opt/rv-match/c-semantics/profiles/x86_64-linux-gcc-glibc/src/kcc_types.c55777c10-8fd5-11ea-9420-aad0e96ca077\\\"\", \"String\"), `global_C-TYPING-SYNTAX`(.KList))))), #token(\"0\", \"Int\"), #token(\"8\", \"Int\"))")
+```
+However, if we just create the same simple program in a different folder and run it with `kcc test.c -o ktest; ./ktest`, everything goes normal and error message disappeared.
+
+This is probably due to the fact that `true.c` is using `stderr`, `stdout`,`fclose` and `fputs` defined in `lib/stdio.h` inside `coreutils-8.19` instead of system library, and it is also using a quite complicated `Makefile` which could potentially adds up more complexity of the building process. For the same simple program which does not display the error message, it is using the `<stdio.h>` in system library. This may imply that the codeblock which causes this error to be displayed is located in the `lib` files written by coreutils.
