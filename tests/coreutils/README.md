@@ -519,4 +519,46 @@ Fatal error: exception (Invalid_argument
 
  ```
 
+Line 1251 in `sort.c` is as following:
+```c
+...
+  for (i = 0; i < UCHAR_LIM; ++i)
+    {
+      blanks[i] = !! isblank (i);
+      nonprinting[i] = ! isprint (i);
+      nondictionary[i] = ! isalnum (i) && ! isblank (i);
+      fold_toupper[i] = toupper (i);                        //Line 1251
+    }
+...
+```
+We can write a simple program to replicate this message:
+```c
+#include <stdio.h>
+#include <limits.h>
+#include <ctype.h>
 
+#define UCHAR_LIM ((SCHAR_MAX * 2 + 1) + 1)
+
+int main () {
+    static char fold_toupper[UCHAR_LIM];
+    size_t i;
+
+    for (i = 0; i < UCHAR_LIM; ++i)
+        fold_toupper[i] = toupper (i);
+
+    printf("Reached this point\n");
+    return 0;
+}
+```
+`kcc` succeeded in finding possible undefined behaviors for this program and reported it, then it finished the program correctly:
+```
+Conversion to signed integer outside the range that can be represented:
+      > in main at test.c:12:9
+
+    Implementation defined behavior (IMPL-CCV2):
+        see C11 section 6.3.1.3:3 http://rvdoc.org/C11/6.3.1.3
+        see C11 section J.3.5:1 item 4 http://rvdoc.org/C11/J.3.5
+        see CERT-C section INT31-C http://rvdoc.org/CERT-C/INT31-C
+
+Reached this point
+```
