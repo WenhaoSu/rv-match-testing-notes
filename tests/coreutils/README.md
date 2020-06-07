@@ -612,7 +612,7 @@ Fatal error: exception (Invalid_argument
 
 ```
 The specific part showing the undefined behavior is the following:-
-```
+```c
 
 static int
 collapse_escapes (char const *strptr)
@@ -625,5 +625,8 @@ collapse_escapes (char const *strptr)
   while (*strptr)
     {
       if (*strptr != '\\')	/* Is it an escape character? */
-        *strout++ = *strptr++;	/* No, just transfer it. */
+        *strout++ = *strptr++;	/* No, just transfer it. */ (THIS LINE SHOWS ERROR)
+        
 ```
+xstrdup is a function that is called from one of the header files. 
+
