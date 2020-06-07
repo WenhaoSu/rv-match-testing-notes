@@ -593,9 +593,9 @@ This is probably due to the fact that `true.c` is using `stderr`, `stdout`,`fclo
 
 
 
-#### Building paste
+#### Building expr
 
-When running ./paste after compiling it from kcc we get
+When running ./expr after compiling it from kcc we get
 ```
 An object which has been modified is accessed through an expression based on a restrict-qualified pointer and another lvalue not also based on said pointer:
       > in collapse_escapes at paste.c:99:9
