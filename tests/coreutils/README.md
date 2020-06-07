@@ -399,7 +399,7 @@ Below is a summarization of projects built. Here italics means also reporting un
 * Commands that are able to compile, but failed to execute and reported `convert_byte_to_native` error message:
   * date, echo, **wc**, uname, **sort**
 * Commands that are able to compile, but reported Undefined Behavior when executing:
-  * ls
+  * ls, **head**
 
 Below are detailed report for several commands:
 
@@ -629,4 +629,41 @@ collapse_escapes (char const *strptr)
         
 ```
 xstrdup is a function that is called from one of the header files. Even though it shows undefined behviour it gives the correct output. Hence kcc may be regarded as successful in this case.
+
+#### Building head
+
+While using './head' after compiling with kcc we get the following undefined behaviour
+```
+Type of lvalue (const char * const) not compatible with the effective type of the object being accessed (char * [3]):
+      > in main at head.c:1063:3
+
+    Undefined behavior (UB-EIO10):
+        see C11 section 6.5:7 http://rvdoc.org/C11/6.5
+        see C11 section J.2:1 item 37 http://rvdoc.org/C11/J.2
+        see CERT-C section EXP39-C http://rvdoc.org/CERT-C/EXP39-C
+        see MISRA-C section 8.1:3 http://rvdoc.org/MISRA-C/8.1
+
+```
+The part which shows the undefined behaviour in head.c is
+```c
+ static char const *const default_file_list[] = {"-", NULL};
+  char const *const *file_list;
+  file_list = (optind < argc
+               ? (char const *const *) &argv[optind]
+               : default_file_list);
+    for (i = 0; file_list[i]; ++i)
+    ok &= head_file (file_list[i], n_units, count_lines, elide_from_end);    
+```
+The following program gives the same error thus helping to indentify the problem here
+```c
+#include <stdio.h>
+
+int main (int argc, char **argv){
+ char const *const *file_list={"-", NULL};
+ int i=0;
+ for (i = 0; file_list[i]; ++i){printf("%s\n","lol" );}
+}
+```
+
+Hence kcc may be working correctly and showing us the correct undefined behaviour.
 
