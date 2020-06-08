@@ -390,7 +390,7 @@ Fatal error: exception (Invalid_argument
   "convert_byte_to_native: encodedValue(opaque(#token(\"1\", \"Int\"), ut(`.Set`(.KList), structType(tag(`Identifier`(#token(\"\\\"_IO_FILE\\\"\", \"String\")), #token(\"\\\"/opt/rv-match/c-semantics/profiles/x86_64-linux-gcc-glibc/src/kcc_types.c55777c10-8fd5-11ea-9420-aad0e96ca077\\\"\", \"String\"), `global_C-TYPING-SYNTAX`(.KList))))), #token(\"0\", \"Int\"), #token(\"8\", \"Int\"))")
 ```
 ---
-#### Test Summary
+### Test Summary
 Below is a summarization of projects built. Here italics means also reporting undefined behaviors:
 * Commands that are able to compile, could execute and print the result, with almost no error except `convert_byte_to_native` error:
   * nice
@@ -403,7 +403,7 @@ Below is a summarization of projects built. Here italics means also reporting un
 
 Below are detailed report for several commands:
 
-##### Building cat
+### Building cat
 
 When runing `./cat ../AUTHORS` for `kcc` generated executable file, it reported
 ```
@@ -432,7 +432,7 @@ ptr_align (void const *ptr, size_t alignment)
 It seems that `kcc` succeeded in reporting an undefined behavior / nonstandard operation here.
 
 
-##### Building ls
+### Building ls
 
 When runing `./ls` for `kcc` generated executable file, it reported
 ```
@@ -479,7 +479,7 @@ Conversion from an integer to non-null pointer:
 Fatal error: exception (Invalid_argument "mismatched constructor at top of split configuration")
 ```
 
-##### Building wc
+### Building wc
 
 When runing `./wc touch.c` for `kcc` generated executable file, it reported
 ```
@@ -514,7 +514,7 @@ is_basic (char c)
 ...
 ```
 
-##### Building nice
+### Building nice
 
 When runing `./nice` followed directly by other commands, `kcc` compiled version succeeded and didn't report any error.
 Run `./nice -n 19 whoami` would give:
@@ -523,12 +523,12 @@ Run `./nice -n 19 whoami` would give:
 ```
 while `gcc` compiled version would not have this error.
 
-##### Building true & false
+### Building true & false
 
 When no command line arguments are provided, it would not report any error. However, when run `./true ls`, it would report `convert_byte_to_native` error message.
 The same holds for `./false`.
 
-##### Building sort
+### Building sort
  When running './sort' for 'kcc' generated executable file it reported
  ```
  Conversion to signed integer outside the range that can be represented:
@@ -619,7 +619,7 @@ This is probably due to the fact that `true.c` is using `stderr`, `stdout`,`fclo
 
 
 
-#### Building expr
+### Building expr
 
 When running ./expr after compiling it from kcc we get
 ```
@@ -656,7 +656,7 @@ collapse_escapes (char const *strptr)
 ```
 xstrdup is a function that is called from one of the header files. Even though it shows undefined behviour it gives the correct output. Hence kcc may be regarded as successful in this case.
 
-#### Building head
+### Building head
 
 While using './head' after compiling with kcc we get the following undefined behaviour
 ```
