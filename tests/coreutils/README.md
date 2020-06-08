@@ -395,11 +395,11 @@ Below is a summarization of projects built. Here italics means also reporting un
 * Commands that are able to compile, could execute and print the result, with almost no error except `convert_byte_to_native` error:
   * nice
 * Commands that are able to compile, could execute and print the result, but reported `convert_byte_to_native` error message when ending the program:
-  * **cat**, false, pwd, true, whoami, yes
+  * **cat**, false, pwd, true, whoami, yes , **expr**, logname ,stat, pwd
 * Commands that are able to compile, but failed to execute and reported `convert_byte_to_native` error message:
-  * date, echo, **wc**, uname, **sort**
+  * date, echo, **wc**, uname, **sort** , mkdir ,fold ,echo ,printf ,sum ,uname
 * Commands that are able to compile, but reported Undefined Behavior when executing:
-  * ls
+  * ls, **head**, seq
 
 Below are detailed report for several commands:
 
@@ -616,3 +616,80 @@ Fatal error: exception (Invalid_argument
 However, if we just create the same simple program in a different folder and run it with `kcc test.c -o ktest; ./ktest`, everything goes normal and error message disappeared.
 
 This is probably due to the fact that `true.c` is using `stderr`, `stdout`,`fclose` and `fputs` defined in `lib/stdio.h` inside `coreutils-8.19` instead of system library, and it is also using a quite complicated `Makefile` which could potentially adds up more complexity of the building process. For the same simple program which does not display the error message, it is using the `<stdio.h>` in system library. This may imply that the codeblock which causes this error to be displayed is located in the `lib` files written by coreutils.
+
+
+
+#### Building expr
+
+When running ./expr after compiling it from kcc we get
+```
+An object which has been modified is accessed through an expression based on a restrict-qualified pointer and another lvalue not also based on said pointer:
+      > in collapse_escapes at paste.c:99:9
+        in main at paste.c:503:3
+
+    Undefined behavior (UB-ECL3):
+        see C11 section 6.7.3.1:4 http://rvdoc.org/C11/6.7.3.1
+        see C11 section J.2:1 item 68 http://rvdoc.org/C11/J.2
+        see CERT-C section EXP43-C http://rvdoc.org/CERT-C/EXP43-C
+        see MISRA-C section 8.1:3 http://rvdoc.org/MISRA-C/8.1
+
+Fatal error: exception (Invalid_argument
+  "convert_byte_to_native: encodedValue(opaque(#token(\"0\", \"Int\"), ut(`.Set`(.KList), structType(tag(`Identifier`(#token(\"\\\"_IO_FILE\\\"\", \"String\")), #token(\"\\\"kcc_types.c15e7b5db-8efa-11ea-9073-acb87a5092db\\\"\", \"String\"), `global_C-TYPING-SYNTAX`(.KList))))), #token(\"0\", \"Int\"), #token(\"8\", \"Int\"))")
+
+```
+The specific part showing the undefined behavior is the following:-
+```c
+
+static int
+collapse_escapes (char const *strptr)
+{
+  char *strout = xstrdup (strptr);
+  bool backslash_at_end = false;
+
+  delims = strout;
+
+  while (*strptr)
+    {
+      if (*strptr != '\\')	/* Is it an escape character? */
+        *strout++ = *strptr++;	/* No, just transfer it. */ (THIS LINE SHOWS ERROR)
+        
+```
+xstrdup is a function that is called from one of the header files. Even though it shows undefined behviour it gives the correct output. Hence kcc may be regarded as successful in this case.
+
+#### Building head
+
+While using './head' after compiling with kcc we get the following undefined behaviour
+```
+Type of lvalue (const char * const) not compatible with the effective type of the object being accessed (char * [3]):
+      > in main at head.c:1063:3
+
+    Undefined behavior (UB-EIO10):
+        see C11 section 6.5:7 http://rvdoc.org/C11/6.5
+        see C11 section J.2:1 item 37 http://rvdoc.org/C11/J.2
+        see CERT-C section EXP39-C http://rvdoc.org/CERT-C/EXP39-C
+        see MISRA-C section 8.1:3 http://rvdoc.org/MISRA-C/8.1
+
+```
+The part which shows the undefined behaviour in head.c is
+```c
+ static char const *const default_file_list[] = {"-", NULL};
+  char const *const *file_list;
+  file_list = (optind < argc
+               ? (char const *const *) &argv[optind]
+               : default_file_list);
+    for (i = 0; file_list[i]; ++i)
+    ok &= head_file (file_list[i], n_units, count_lines, elide_from_end);    
+```
+The following program gives the same error thus helping to indentify the problem here
+```c
+#include <stdio.h>
+
+int main (int argc, char **argv){
+ char const *const *file_list={"-", NULL};
+ int i=0;
+ for (i = 0; file_list[i]; ++i){printf("%s\n","lol" );}
+}
+```
+
+Hence kcc may be working correctly and showing us the correct undefined behaviour.
+
