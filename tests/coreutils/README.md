@@ -418,7 +418,19 @@ Modulus operator with a pointer value as an argument:
 ```
 then it succeeded in printing out the contents in the file `../AUTHORS`. However after finish printing the contents and is about to end the program, kcc reports `convert_byte_to_native` error message.
 
-The intuition here is that `kcc` succeeded in compiling and running `cat`, but it may report a fatal error when exiting the program.
+Here is the code for line 496 in `system.h`:
+
+```c
+static inline void *
+ptr_align (void const *ptr, size_t alignment)
+{
+  char const *p0 = ptr;
+  char const *p1 = p0 + alignment - 1;
+  return (void *) (p1 - (size_t) p1 % alignment);         // Line 496
+}
+```
+It seems that `kcc` succeeded in reporting an undefined behavior / nonstandard operation here.
+
 
 ##### Building ls
 
@@ -486,6 +498,20 @@ Type of lvalue (const unsigned int) not compatible with the effective type of th
 
 Fatal error: exception (Invalid_argument
   "convert_byte_to_native: encodedValue(opaque(#token(\"1\", \"Int\"), ut(`.Set`(.KList), structType(tag(`Identifier`(#token(\"\\\"_IO_FILE\\\"\", \"String\")), #token(\"\\\"/opt/rv-match/c-semantics/profiles/x86_64-linux-gcc-glibc/src/kcc_types.c55777c10-8fd5-11ea-9420-aad0e96ca077\\\"\", \"String\"), `global_C-TYPING-SYNTAX`(.KList))))), #token(\"0\", \"Int\"), #token(\"8\", \"Int\"))")
+```
+
+Line 310 in `/lib/mbchar.h` is:
+```c
+...
+extern const unsigned int is_basic_table[];
+
+static inline bool
+is_basic (char c)
+{
+  return (is_basic_table [(unsigned char) c >> 5] >> ((unsigned char) c & 31))            // Line 310
+         & 1;
+}
+...
 ```
 
 ##### Building nice
