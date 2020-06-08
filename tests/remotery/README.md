@@ -6,6 +6,10 @@ The source code of `remotery` can be found [here](https://github.com/Celtoys/Rem
 
 The potential issue is that `x86_64-linux-gcc-glibc` profile have trouble supporting `math.h`, while the code block in `math.h` that checks the verison of `gcc` throwed an error message and caused `kcc_config dumped`.
 
+The issue page of this problem is [here](https://github.com/runtimeverification/c-semantics/issues/6).
+
+This issue is closed since it would no longer report `Translation failed`, but only report `Warning: Encountered _Complex type.` on the latest version of kcc.
+
 ### Pre-request
 ```
 git clone https://github.com/Celtoys/Remotery.git
