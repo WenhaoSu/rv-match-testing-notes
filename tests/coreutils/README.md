@@ -478,6 +478,38 @@ Conversion from an integer to non-null pointer:
 Fatal error: exception (Invalid_argument "mismatched constructor at top of split configuration")
 ```
 
+Here is line 2883 in `ls.c`:
+
+```c
+...
+  f = &cwd_file[cwd_n_used];
+  memset (f, '\0', sizeof *f);                // Line 2883
+  f->stat.st_ino = inode;
+  f->filetype = type;
+...
+```
+Although we can reproduce the same error message of `Unknown error (UNK-1)` by writing a simple c program as following:
+```c
+#include <stdio.h>
+#include <string.h>
+
+struct fileinfo {
+    int name;
+  };
+
+static struct fileinfo *cwd_file ;
+
+int main () {
+    struct fileinfo *f;
+    f = &cwd_file[0];
+    memset (f, '\0', sizeof *f);
+    return 0;
+}
+```
+but `gcc` will also report `Segmentation fault (core dumped)` in the above program. Also, the above program will not report `Invalid_argument` fatal error.
+
+The last error message (`Invalid_argument`) here is same to what we got when testing [tcpdump](https://github.com/WenhaoSu/rv-match-testing-notes/blob/master/tests/tcpdump/README.md).
+
 ### Building wc
 
 When runing `./wc touch.c` for `kcc` generated executable file, it reported
