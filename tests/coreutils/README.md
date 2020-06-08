@@ -431,7 +431,6 @@ ptr_align (void const *ptr, size_t alignment)
 ```
 It seems that `kcc` succeeded in reporting an undefined behavior / nonstandard operation here.
 
-
 ### Building ls
 
 When runing `./ls` for `kcc` generated executable file, it reported
@@ -513,6 +512,25 @@ is_basic (char c)
 }
 ...
 ```
+
+However, the following program *failed* to provide the same error:
+```c
+#include <stdio.h>
+#include <stdbool.h>
+
+const unsigned int is_basic_table[] = {1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3};
+
+static inline bool is_basic (char c) {
+  return (is_basic_table [(unsigned char) c >> 5] >> ((unsigned char) c & 31)) & 1;
+}
+
+int main () {
+    char c = 10;
+    bool test = is_basic (c);
+    return 0;
+}
+```
+Another observation is that if we use the latest release of `kcc` on [runtimeverification/match](https://github.com/runtimeverification/match), this undefined behavior would then not be reported. Hence, I believe it is fine to ignore this undefined behavior for now.
 
 ### Building nice
 
