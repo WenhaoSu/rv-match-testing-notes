@@ -669,9 +669,9 @@ This is probably due to the fact that `true.c` is using `stderr`, `stdout`,`fclo
 
 
 
-### Building expr
+### Building paste
 
-When running ./expr after compiling it from kcc we get
+When running ./paste after compiling it from kcc we get
 ```
 An object which has been modified is accessed through an expression based on a restrict-qualified pointer and another lvalue not also based on said pointer:
       > in collapse_escapes at paste.c:99:9
@@ -704,7 +704,7 @@ collapse_escapes (char const *strptr)
         *strout++ = *strptr++;	/* No, just transfer it. */ (THIS LINE SHOWS ERROR)
         
 ```
-xstrdup is a function that is called from one of the header files. Even though it shows undefined behviour it gives the correct output. Hence kcc may be regarded as successful in this case.
+xstrdup is a function that is called from one of the header files. And it is difficult to find the same error through the system files
 
 ### Building head
 
