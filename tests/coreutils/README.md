@@ -33,7 +33,6 @@ make check
 `kcc` failed in the `make` job.
 
 When running `make` with `kcc`, we get the following error message when compiling `src/make-prime-list`:
-
 ```
   CCLD     src/make-prime-list
 make[1]: Leaving directory '/mnt/c/Users/suwen/Desktop/intern/coreutils-test/kcc/coreutils'
