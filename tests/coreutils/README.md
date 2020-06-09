@@ -394,7 +394,7 @@ Below is a summarization of projects built. Here italics means also reporting un
 * Commands that are able to compile, could execute and print the result, with almost no error except `convert_byte_to_native` error:
   * nice
 * Commands that are able to compile, could execute and print the result, but reported `convert_byte_to_native` error message when ending the program:
-  * **cat**, false, pwd, true, whoami, yes , **expr**, logname ,stat, pwd, hostid, printenv, tty
+  * **cat**, false, pwd, true, whoami, yes , **expr**, logname ,stat, pwd, hostid, printenv, tty, env
 * Commands that are able to compile, but failed to execute and reported `convert_byte_to_native` error message:
   * date, echo, **wc**, uname, **sort** , mkdir ,fold ,echo ,printf ,sum ,uname, factor, fold, groups, id, mkfifo, pathchk,     pr, uniq, users, yes, chcon, chgrp, cksum, comm
 * Commands that are able to compile, but reported Undefined Behavior when executing:
