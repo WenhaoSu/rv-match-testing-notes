@@ -4,7 +4,9 @@ The source code of `getty` can be found [here](https://github.com/StarchLinux/ge
 
 ### Summary
 
-The potential issue is that `kcc` does not recognize `#define __attribute_nonstring__`, 
+The potential issue is that `kcc` does not recognize `#define __attribute_nonstring__`.
+
+The issue page of this problem is [here](https://github.com/runtimeverification/c-semantics/issues/5).
 
 ### Pre-request
 ```
