@@ -391,15 +391,15 @@ Fatal error: exception (Invalid_argument
 ---
 ### Test Summary
 Below is a summarization of projects built. Here italics means also reporting undefined behaviors:
-* Commands that are able to compile, could execute and print the result, with almost no error except `convert_byte_to_native` error:
-  * nice
+
 * Commands that are able to compile, could execute and print the result, but reported `convert_byte_to_native` error message when ending the program:
   * **cat**, false, pwd, true, whoami, yes , **expr**, logname ,stat, pwd, hostid, printenv, tty, env, getlimits, nproc
-* Commands that are able to compile, but failed to execute and reported `convert_byte_to_native` error message:
-  * date, echo, **wc**, uname, **sort** , mkdir ,fold ,echo ,printf ,sum ,uname, factor, fold, groups, id, mkfifo, pathchk,     pr, uniq, users, yes, chcon, chgrp, cksum, comm, nl, readlink, stdbuf, sync, tee, touch, tr, truncate, basename
+* Commands that are able to compile, but failed to execute and reported `convert_byte_to_native` error message or any other   Undefined Behaviour:
+  * date, echo, **wc**,**head**, uname, **sort** , mkdir ,fold ,echo ,printf ,sum ,uname, factor, fold, groups, id, mkfifo, pathchk,     pr, uniq, users, yes, chcon, chgrp, cksum, comm, nl, readlink, stdbuf, sync, tee, touch, tr, truncate, basename, nice, seq, cp
 * Commands that are able to compile, but reported Undefined Behavior when executing:
-  * ls, **head**, seq, cp, dd, df, dircolors, du, ln, md5sum, realpath, tail
-
+  * ls, dd, df, dircolors, du, ln, md5sum, realpath, tail
+* Commands that are unable to compile due to Translation failure and does not produce any executable:
+   copy, extent-scan, find-mount-point, fmt, lbracket, libstdbuf,ls-dir, ls-ls, operand2sign, prog-fprintf, relpath
 Below are detailed report for several commands:
 
 ### Building cat
