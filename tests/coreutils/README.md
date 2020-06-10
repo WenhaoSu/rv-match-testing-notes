@@ -399,7 +399,7 @@ Below is a summarization of projects built. Here italics means also reporting un
 * Commands that are able to compile, but reported Undefined Behavior when executing:
   * ls, dd, df, du
 * Commands that are unable to compile due to Translation failure and does not produce any executable:
-   copy, extent-scan, find-mount-point, fmt, lbracket, libstdbuf,ls-dir, ls-ls, operand2sign, prog-fprintf, relpath
+  * copy, extent-scan, find-mount-point, fmt, lbracket, libstdbuf,ls-dir, ls-ls, operand2sign, prog-fprintf, relpath
 Below are detailed report for several commands:
 
 ### Building cat
