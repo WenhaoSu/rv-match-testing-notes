@@ -170,4 +170,14 @@ This is probably due to the fact that `true.c` is using `stderr`, `stdout`,`fclo
 Observation on `convert_byte_to_native` error:
 If we comment the line `atexit (close_stdout);` in `true.c` and the line `#include "unlocked-io.h"` in `system.h`, then by typing `make true`, we will get an executive file which can execute normally and will not report the `convert_byte_to_native` error.
 
+Following commands are verified that can be executed correctly after commenting the `atexit (close_stdout);` and  `#include "unlocked-io.h"` line:
+
+* `true`, `date`, `whoami`, `wc`, `echo`, `cat`, `mkdir`, `dirname`, `cp`, `env`, `pwd`
+
+* `rm` can succeed in removing files, but will report quite a lot undefined behaviors
+
+Following commands still failed:
+
+* `ls` still has `Fatal error: exception (Invalid_argument "mismatched constructor at top of split configuration")`
+
 
