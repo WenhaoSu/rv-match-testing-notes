@@ -172,7 +172,7 @@ If we comment the line `atexit (close_stdout);` in `true.c` and the line `#inclu
 
 Following commands are verified that can be executed correctly after commenting the `atexit (close_stdout);` and  `#include "unlocked-io.h"` line:
 
-* `true`, `date`, `whoami`, `wc`, `echo`, `cat`, `mkdir`, `dirname`, `cp`, `env`, `pwd`
+* `true`, `date`, `whoami`, `wc`, `echo`, `cat`, `mkdir`, `dirname`, `cp`, `env`, `pwd`, `uname`, `users` , `tty`, `touch` , `timeout` , `test` , `mkdir` , `date` , `echo` , `expr` , `head` , `tail` , `printf` , `hostid` , `hostname` , `id` , `logname` , `dirname` , `dircolors` , `env` , `expand` , `factor` , `fold` , `getlimits` , `groups` , `ln` , `chmod` , `comm` , `nproc` , `pathchk` , `stat` , `sleep` , `basename` 
 
 * `rm` can succeed in removing files, but will report quite a lot undefined behaviors
 
