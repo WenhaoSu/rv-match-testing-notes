@@ -172,7 +172,7 @@ If we comment the line `atexit (close_stdout);` in `true.c` and the line `#inclu
 
 Following commands are verified that can be executed correctly after commenting the `atexit (close_stdout);` and  `#include "unlocked-io.h"` line:
 
-* `basename`, `cat`, `true`, `false`, `date`, `whoami`, `wc`, `mkdir`, `dirname`, `cp`, `env`, `pwd`, `uname`, `users` , `tty`, `touch` , `timeout` , `test`, `echo` , `expr`, `head`, `tail`, `printf`, `hostid`, `hostname`, `id` ,`logname`,`dircolors` ,`expand` ,`factor` ,`fold` ,`groups` , `ln` , `chmod`, `chown`, `comm` , `nproc` , `pathchk` , `stat` , `sleep` , `rmdir`, `split`, `who`, `yes`, `pinky`, `chgrp`, `nice`, `chcon`, `base64`, `chroot`
+* `basename`, `cat`, `true`, `false`, `date`, `whoami`, `wc`, `mkdir`, `dirname`, `cp`, `env`, `pwd`, `uname`, `users` , `tty`, `touch` , `timeout` , `test`, `echo` , `expr`, `head`, `tail`, `printf`, `hostid`, `hostname`, `id` ,`logname`,`dircolors` ,`expand` ,`factor` ,`fold` ,`groups` , `ln` , `chmod`, `chown`, `comm` , `nproc` , `pathchk` , `stat` , `sleep` , `rmdir`, `split`, `who`, `yes`, `pinky`, `chgrp`, `nice`, `chcon`, `base64`, `chroot`, `printenv`
 
 * `rm`: succeed in removing files, but will report quite a lot undefined behaviors
 
@@ -181,3 +181,7 @@ Following commands still failed:
 * `ls`: reports `Fatal error: exception (Invalid_argument "mismatched constructor at top of split configuration")`
 
 * `shuf`,`sort`: succeeded in running `--help`, but still reports `convert_byte_to_native` error while running
+
+Untested commands:
+
+* `cksum` `csplit` `cut` `dd` `df` `dir` `du` `fmt` `install` `join` `kill` `link` `mkfifo` `mknod` `mktemp` `mv` `nl` `nohup` `od` `paste` `pr` `ptx` `readlink` `realpath` `runcon` `seq` `shred` `stdbuf` `stty` `sum` `sync` `tac` `tee` `tr` `truncate` `tsort` `unexpand` `uniq` `unlink` `uptime` `vdir`
