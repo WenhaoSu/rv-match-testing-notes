@@ -172,7 +172,7 @@ If we comment the line `atexit (close_stdout);` in `true.c` and the line `#inclu
 
 Following commands are verified that can be executed correctly after commenting the `atexit (close_stdout);` and  `#include "unlocked-io.h"` line:
 
-* `basename`, `cat`, `true`, `false`, `date`, `whoami`, `wc`, `mkdir`, `dirname`, `cp`, `env`, `pwd`, `uname`, `users` , `tty`, `touch` , `timeout` , `test`, `echo` , `expr`, `head`, `tail`, `printf`, `hostid`, `hostname`, `id` ,`logname`,`dircolors` ,`expand` ,`factor` ,`fold` ,`groups` , `ln` , `chmod`, `chown`, `comm` , `nproc` , `pathchk` , `stat` , `sleep` , `rmdir`, `split`, `who`, `yes`, `pinky`, `chgrp`, `nice`, `chcon`, `base64`, `chroot`, `printenv`, `csplit`, `link` , `unlink` , `readlink` , `truncate` , `sync` , `runcon` , `nohup` , `mkfifo` , `mv`
+* `basename`, `cat`, `true`, `false`, `date`, `whoami`, `wc`, `mkdir`, `dirname`, `cp`, `env`, `pwd`, `uname`, `users` , `tty`, `touch` , `timeout` , `test`, `echo` , `expr`, `head`, `tail`, `printf`, `hostid`, `hostname`, `id` ,`logname`,`dircolors` ,`expand` ,`factor` ,`fold` ,`groups` , `ln` , `chmod`, `chown`, `comm` , `nproc` , `pathchk` , `stat` , `sleep` , `rmdir`, `split`, `who`, `yes`, `pinky`, `chgrp`, `nice`, `chcon`, `base64`, `chroot`, `printenv`, `csplit`, `link` , `unlink` , `readlink` , `truncate` , `sync` , `runcon` , `nohup` , `mkfifo` , `mv`, `tr`, `mknod`
 
 * `rm`: succeed in removing files, but will report quite a lot undefined behaviors
 
@@ -180,15 +180,14 @@ Following commands still failed:
 
 * `ls`: reports `Fatal error: exception (Invalid_argument "mismatched constructor at top of split configuration")`
 
-* `shuf`,`sort`, `cut`, `cksum` , `tee` , `du` , `nl` , `sum`: succeeded in running `--help`, but still reports `convert_byte_to_native` error while running
+* `shuf`,`sort`, `cut`, `cksum` , `tee` , `du` , `nl` , `sum`, `pr`, `tsort`, `uniq`, `uptime`: succeeded in running `--help`, but still reports `convert_byte_to_native` error while running
 
-* `unexpand` , `mktemp` , `join` , `seq` , `paste`: succeeded in running and printing/executing the right result but still reports convert_byte_to_native` error while running
+* `unexpand` , `mktemp` , `join` , `seq` , `paste`: succeeded in running and printing/executing the right result but still reports `convert_byte_to_native` error while running
 
-* `od` , `df`: showed execution dupmed while running.
+* `od` , `df`, `stty`, `dd`, `stdbuf`, `shred`: showed `Execution failed (configuration dumped)` while running
 
-* `realpath`: `exeption Z.overflow` while executing.
+* `realpath`: showed `exeption Z.overflow` while executing
 
-* `fmt` : Translation failed error.
-Untested commands:
+* `fmt` : showed translation failed error
 
-* `dd` `df` `dir` `du` `fmt` `install` `join` `kill` `link` `mkfifo` `mknod` `mktemp` `mv` `nl` `nohup` `od` `paste` `pr` `ptx` `readlink` `realpath` `runcon` `seq` `shred` `stdbuf` `stty` `sum` `sync` `tac` `tee` `tr` `truncate` `tsort` `unexpand` `uniq` `unlink` `uptime` `vdir`
+* `tac`, `kill`, `ptx`: other reasons that failed to show correct behavior (stuck in executing, invalid commands...)
