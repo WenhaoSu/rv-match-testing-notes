@@ -180,13 +180,15 @@ Following commands still failed:
 
 * `ls`: reports `Fatal error: exception (Invalid_argument "mismatched constructor at top of split configuration")`
 
-* `shuf`,`sort`, `cut`, `cksum` , `tee` , `du` , `nl`: succeeded in running `--help`, but still reports `convert_byte_to_native` error while running
+* `shuf`,`sort`, `cut`, `cksum` , `tee` , `du` , `nl` , `sum`: succeeded in running `--help`, but still reports `convert_byte_to_native` error while running
 
-* `unexpand` , `mktemp` , `join` , `seq`: succeeded in running and printing/executing the right result but still reports convert_byte_to_native` error while running
+* `unexpand` , `mktemp` , `join` , `seq` , `paste`: succeeded in running and printing/executing the right result but still reports convert_byte_to_native` error while running
 
 * `od` , `df`: showed execution dupmed while running.
 
-* `realpath`: `exeption Z.overflow` while executing
+* `realpath`: `exeption Z.overflow` while executing.
+
+* `fmt` : Translation failed error.
 Untested commands:
 
 * `dd` `df` `dir` `du` `fmt` `install` `join` `kill` `link` `mkfifo` `mknod` `mktemp` `mv` `nl` `nohup` `od` `paste` `pr` `ptx` `readlink` `realpath` `runcon` `seq` `shred` `stdbuf` `stty` `sum` `sync` `tac` `tee` `tr` `truncate` `tsort` `unexpand` `uniq` `unlink` `uptime` `vdir`
