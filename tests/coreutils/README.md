@@ -181,6 +181,7 @@ Following commands still failed:
 * `ls`: reports `Fatal error: exception (Invalid_argument "mismatched constructor at top of split configuration")`
 
 * `shuf`,`sort`, `cut`, `cksum`: succeeded in running `--help`, but still reports `convert_byte_to_native` error while running
+* `unexpand` , `mktemp` , `join` , `seq`: succeeded in running and printing/executing the right result but still reports convert_byte_to_native` error while running
 
 Untested commands:
 
