@@ -172,7 +172,7 @@ If we comment the line `atexit (close_stdout);` in `true.c` and the line `#inclu
 
 Following commands are verified that can be executed correctly after commenting the `atexit (close_stdout);` and  `#include "unlocked-io.h"` line:
 
-* `basename`, `cat`, `true`, `false`, `date`, `whoami`, `wc`, `mkdir`, `dirname`, `cp`, `env`, `pwd`, `uname`, `users` , `tty`, `touch` , `timeout` , `test`, `echo` , `expr`, `head`, `tail`, `printf`, `hostid`, `hostname`, `id` ,`logname`,`dircolors` ,`expand` ,`factor` ,`fold` ,`groups` , `ln` , `chmod`, `chown`, `comm` , `nproc` , `pathchk` , `stat` , `sleep` , `rmdir`, `split`, `who`, `yes`, `pinky`, `chgrp`, `nice`, `chcon`, `base64`, `chroot`, `printenv`, `csplit`
+* `basename`, `cat`, `true`, `false`, `date`, `whoami`, `wc`, `mkdir`, `dirname`, `cp`, `env`, `pwd`, `uname`, `users` , `tty`, `touch` , `timeout` , `test`, `echo` , `expr`, `head`, `tail`, `printf`, `hostid`, `hostname`, `id` ,`logname`,`dircolors` ,`expand` ,`factor` ,`fold` ,`groups` , `ln` , `chmod`, `chown`, `comm` , `nproc` , `pathchk` , `stat` , `sleep` , `rmdir`, `split`, `who`, `yes`, `pinky`, `chgrp`, `nice`, `chcon`, `base64`, `chroot`, `printenv`, `csplit`, `link` , `unlink` , `readlink` , `truncate` , `sync` , `runcon` , `nohup` , `mkfifo` , `mv`
 
 * `rm`: succeed in removing files, but will report quite a lot undefined behaviors
 
