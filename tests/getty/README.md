@@ -8,6 +8,8 @@ The potential issue is that `kcc` does not recognize `#define __attribute_nonstr
 
 The issue page of this problem is [here](https://github.com/runtimeverification/c-semantics/issues/5).
 
+This issue is due to the out-dated `cdefs.h` inside `rv-match`, so it can be fixed by updating the `cdefs.h` file in `rv-match/c-semantics-plugin/src/main/c-semantics/profiles/x86_64-linux-gcc-glibc/include/library/sys/cdefs.h` to the latest version, which can be found [here](https://code.woboq.org/qt5/include/sys/cdefs.h.html).
+
 ### Pre-request
 ```
 git clone https://github.com/StarchLinux/getty.git
